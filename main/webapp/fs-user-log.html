@@ -1,0 +1,68 @@
+<div>
+    <table st-table="dispItems" st-safe-src="items" class="table table-bordered table-striped">
+        <caption class="caption h3 text-center" title="">操作日志
+        </caption>
+        <thead>
+        <tr>
+            <th></th>
+            <th><input st-search="time" placeholder="时间" type="search"
+                       class="input-sm form-control">
+            </th>
+            <th><input st-search="username" placeholder="用户名" type="search"
+                       class="input-sm form-control">
+            </th>
+            <th>
+                <select st-search="usertype">
+                    <option value="">所有</option>
+                    <option ng-repeat="p in items.itemTypes">{{p}}</option>
+                </select>
+            </th>
+            <th><input st-search="content" placeholder="操作" type="search" class="input-sm form-control">
+            </th>
+            <th><input st-search="result" placeholder="操作结果" type="search"
+                       class="input-sm form-control">
+            </th>
+        </tr>
+        <tr>
+            <th>序号</th>
+            <th st-sort="time">时间</th>
+            <th st-sort="username">用户名</th>
+            <th st-sort="usertype">用户类型</th>
+            <th st-sort="content">操作</th>
+            <th st-sort="result">操作结果</th>
+        </tr>
+        </thead>
+
+        <tbody ng-show="items!==undefined&&items.length>0" class="">
+        <tr ng-repeat="t in dispItems">
+            <td>{{$index+1}}</td>
+            <td>{{t.time}}</td>
+            <td>{{t.username}}</td>
+            <td>{{t.usertype}}</td>
+            <td>{{t.content}}</td>
+            <td>{{t.result}}</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="items!==undefined&&items.length==0">
+        <tr>
+            <td colspan="20" class="text-center text-info">无数据</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="errMsg">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        </tfoot>
+    </table>
+</div>

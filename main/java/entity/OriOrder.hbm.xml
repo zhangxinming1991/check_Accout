@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.OriOrder" table="ori_order" catalog="check_a_db" optimistic-lock="version">
+        <id name="orderNum" type="string">
+            <column name="order_num" length="30" />
+            <generator class="assigned" />
+        </id>
+        <property name="input" type="java.lang.Double">
+            <column name="input" precision="22" scale="0">
+                <comment>&#177;&#190;&#212;&#194;&#202;&#213;&#200;&#235;</comment>
+            </column>
+        </property>
+        <property name="debt" type="java.lang.Double">
+            <column name="debt" precision="22" scale="0" />
+        </property>
+        <property name="total" type="java.lang.Double">
+            <column name="total" precision="22" scale="0" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="15" />
+        </property>
+        <property name="updateTime" type="string">
+            <column name="update_time" length="10" />
+        </property>
+        <property name="remark" type="string">
+            <column name="remark" length="100" />
+        </property>
+        <property name="client" type="string">
+            <column name="client" length="60" />
+        </property>
+        <property name="owner" type="string">
+            <column name="owner" length="20" />
+        </property>
+        <property name="connectBank" type="string">
+            <column name="connect_bank" length="100">
+                <comment>&#185;&#216;&#193;&#170;&#181;&#196;&#182;&#224;&#204;&#245;&#179;&#246;&#196;&#201;</comment>
+            </column>
+        </property>
+        <property name="customid" type="string">
+            <column name="customid" length="30">
+                <comment>&#182;&#212;&#213;&#203;&#193;&#170;&#207;&#181;&#200;&#203;id</comment>
+            </column>
+        </property>
+        <property name="cuscompanyid" type="string">
+            <column name="cuscompanyid" length="30">
+                <comment>&#191;&#205;&#187;&#167;id</comment>
+            </column>
+        </property>
+        <property name="productTime" type="string">
+            <column name="product_time" length="10">
+                <comment>&#183;&#162;&#187;&#245;&#202;&#177;&#188;&#228;</comment>
+            </column>
+        </property>
+        <property name="ownerProduct" type="string">
+            <column name="owner_product" length="60">
+                <comment>&#187;&#245;&#191;&#238;&#214;&#247;&#204;&#229;</comment>
+            </column>
+        </property>
+        <property name="customname" type="string">
+            <column name="customname" length="100" />
+        </property>
+        <property name="customphone" type="string">
+            <column name="customphone" length="11" />
+        </property>
+        <property name="customweixin" type="string">
+            <column name="customweixin" length="20" />
+        </property>
+        <property name="asname" type="string">
+            <column name="asname" length="20" />
+        </property>
+        <property name="asphone" type="string">
+            <column name="asphone" length="11" />
+        </property>
+        <property name="asemail" type="string">
+            <column name="asemail" length="20" />
+        </property>
+        <property name="province" type="string">
+            <column name="province" length="20">
+                <comment>&#202;&#161;&#183;&#221;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

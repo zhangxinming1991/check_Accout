@@ -1,0 +1,253 @@
+<div>
+    <table st-table="dispRemindsx" st-safe-src="fncReminds" class="table table-bordered table-striped">
+        <button class="btn btn-primary" ng-click="checkCashing()" title="执行对账操作（请在匹配完所有可用数据后操作）"
+                ng-hide="checkInoperable"><span class="glyphicon glyphicon-play"></span>对账……
+        </button>
+        <caption class="caption h3 text-center" title="用户上传的数据"><!--<strong class="text-primary">待审核</strong>的-->付款通知表
+        </caption>
+        <thead>
+        <tr>
+            <th></th>
+            <th><input st-search="id" placeholder="ID" type="search" class="input-sm form-control"></th>
+            <th><input st-search="payer" placeholder="付款人" type="search" class="input-sm form-control"></th>
+            <th><input st-search="payTime" placeholder="上传时间" type="search" class="input-sm form-control"></th>
+            <th><input st-search="payMoney" placeholder="付款金额" type="search" class="input-sm form-control"></th>
+            <!--<th><st-select-distinct collection="['银行转账','电汇','现金']" predicate="payWay" st-search="payWay" placeholder="付款方式" type="search" class="input-sm form-control"></th>-->
+            <th>
+                <select st-search="payWay" class="form-control input-sm">
+                    <option value="">所有</option>
+                    <option ng-repeat="way in fncReminds.payWaysInItems">{{way}}</option>
+                </select>
+            </th>
+            <th><input st-search="receiver" placeholder="款项接收人" type="search" class="input-sm form-control"></th>
+            <th><input st-search="payAccount" placeholder="收款账户" type="search" class="input-sm form-control"></th>
+            <th></th>
+            <th ng-hide="checkInoperable"></th>
+            <th>
+                <select st-search="result" class="input-sm form-control">
+                    <option value="">所有</option>
+                    <option value="Y">已通过</option>
+                    <option value="N">被否决</option>
+                    <option value="W">待定中</option>
+                    <option value="V">无</option>
+                </select>
+            </th>
+            <th><input st-search="comment" placeholder="备注" type="search" class="input-sm form-control"></th>
+        </tr>
+        <tr>
+            <th>序号</th>
+            <th>ID</th>
+            <th st-sort="payer">付款人</th>
+            <th st-sort="payTime">上传时间</th>
+            <th st-sort="payMoney">付款金额/元</th>
+            <th st-sort="payWay">付款方式</th>
+            <th st-sort="receiver">款项接收人</th>
+            <th st-sort="payAccount">收款账户</th>
+            <th>凭证</th>
+            <th ng-hide="checkInoperable">操作</th>
+            <th st-sort="result">状态</th>
+            <th st-sort="comment">备注</th>
+        </tr>
+        </thead>
+
+        <tbody ng-show="isNonEmptyGrid" class="">
+        <tr ng-repeat="r in dispRemindsx">
+            <td>{{$index+1}}</td>
+            <td>{{r.id}}</td>
+            <td>{{r.payer}}</td>
+            <td>{{r.payTime}}</td>
+            <td>
+                总额：{{r.payMoney}}
+                <br>
+                <span>合同{{r.mcontract_data.length}}个</span>
+                <a><span class="glyphicon glyphicon-eye-open" ng-click="showCM(r)"></span></a>
+            </td>
+            <td>{{r.payWay}}</td>
+            <td>{{r.receiver}}</td>
+            <td>{{r.payAccount}}</td>
+            <td><a><span class="glyphicon glyphicon-eye-open" ng-click="showPicture(r.linkCer)"></span></a></td>
+            <td ng-hide="checkInoperable">
+                <button ng-click="attachPaymentNotification(r)"
+                        class=" btn btn-default">匹配出纳
+                </button>
+                <!--<button class="btn btn-default hidden">修改</button>-->
+                <!--ng-disabled="r.result==='Y'||r.result==='M'"-->
+                <!--<button ng-click="approvePaymentNotification(r)" class="btn btn-default">-->
+                <!--通过-->
+                <!--</button>-->
+                <!--ng-disabled="r.result==='N'||r.result==='M'"-->
+                <button ng-click="rejectPaymentNotification(r)" class="btn btn-default">
+                    否决
+                </button>
+                <!--只有无状态时才可待定-->
+                <!--ng-disabled="r.result==='W'||r.result==='M'"-->
+                <button ng-click="tbdPaymentNotification(r)" class=" btn btn-default">待定</button>
+                <!--允许重新匹配？-->
+                <!--ng-disabled="r.result==='N'||r.result==='M'"-->
+            </td>
+            <td>{{(r.result)|notifStatusPrinter}}</td>
+            <td>{{r.comment}}</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isNonEmptyGrid===false">
+        <tr>
+            <td colspan="20" class="text-center text-info">无数据</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="canShowError">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        <!--pagination-->
+        <!--<tr>-->
+        <!--<td colspan="11">-->
+        <!--<div st-pagination="" st-template="pagination.html" st-items-by-page="10"></div>-->
+        <!--</td>-->
+        <!--</tr>-->
+        </tfoot>
+    </table>
+
+
+    <script type="text/ng-template" id="cm-detail-box.html">
+        <span class="glyphicon glyphicon-remove top-right pull-right close" ng-click="closeMsgbox()"></span>
+        <div class="modal-header"><h3 class="modal-title">付款分配</h3></div>
+        <div class="modal-body">
+            <table class="table">
+                <thead>
+                <th>合同号</th>
+                <th>金额/元</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="cm in r.mcontract_data track by $index">
+                    <td>{{cm.contract}}</td>
+                    <td>{{cm.money}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>总付款金额：</th>
+                    <td class="text-primary">{{r.payMoney}}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="closeMsgbox()">关闭</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="attach-to-t.html">
+        <div ng-init="ctrl.attachCfg={srcId:ctrl.r.id}">
+            <div class="modal-header"><h3 class="modal-title" id="assocPanelTitle"><!--关联付款通知到-->匹配出纳</h3></div>
+            <div class="modal-body" id="assocPanelBody">
+                关联<span class="text-info">付款通知</span>：
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <!--<th>订单号</th>-->
+                        <th>付款人</th>
+                        <th>付款时间</th>
+                        <th>付款金额/元</th>
+                        <th>付款方式</th>
+                        <th>款项接收人</th>
+                        <th>收款账户</th>
+                        <!--<th>状态</th>-->
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <!--<td>{{ctrl.r.orderNum}}</td>-->
+                        <td>{{ctrl.r.payer}}</td>
+                        <td>{{ctrl.r.payTime}}</td>
+                        <td>{{ctrl.r.payMoney}}</td>
+                        <td>{{ctrl.r.payWay}}</td>
+                        <td>{{ctrl.r.receiver}}</td>
+                        <td>{{ctrl.r.payAccount}}</td>
+                        <!--<td>{{translateNotifyStatus(ctrl.r.result)}}</td>-->
+                        <td>{{ctrl.r.comment}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                到<span class="text-info">出纳</span>：
+
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>选择</th>
+                            <!--<th>订单号</th>-->
+                            <th>付款人</th>
+                            <th>付款金额</th>
+                            <th>付款方式</th>
+                            <th>付款账号</th>
+                            <th>付款时间</th>
+                            <!--<th>状态</th>-->
+                            <th>条目备注</th>
+                        </tr>
+                        </thead>
+
+                        <tbody ng-show="ctrl.isNonEmptyGrid">
+                        <tr ng-repeat="t in ctrl.trans">
+                            <td>
+                                <input type="radio" ng-value="t.id" ng-model="ctrl.attachCfg.targetId" class="radio">
+                            </td>
+                            <!--<td>{{t.orderNo}}</td>-->
+                            <td>{{t.payer}}</td>
+                            <td>{{t.money}}</td>
+                            <td>{{t.payWay}}</td>
+                            <td>{{t.acountNum}}</td>
+                            <td>{{t.inputTime}}</td>
+                            <!--<td>{{t.status}}</td>-->
+                            <td>{{t.comment}}</td>
+                        </tr>
+                        </tbody>
+
+                        <tbody ng-show="ctrl.isNonEmptyGrid===false">
+                        <tr>
+                            <td colspan="20" class="text-center text-info">无数据</td>
+                        </tr>
+                        </tbody>
+
+                        <tbody ng-show="ctrl.isLoading">
+                        <tr>
+                            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+                        </tr>
+                        </tbody>
+
+                        <tbody ng-show="ctrl.canShowError">
+                        <tr>
+                            <td colspan="20" class="text-center text-warning">{{ctrl.errMsg}}</td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer" id="assocPanelFooter">
+                <button class="btn btn-primary" ng-click="attachSubmit()" ng-disabled="!ctrl.attachCfg.targetId">匹配
+                </button>
+                <button class="btn btn-default" ng-click="closeMsgbox()">取消</button>
+                <div>
+                    <span class="text-info" ng-show="ctrl.isProcessing">操作进行中……</span>
+                    <span class="text-warning" ng-show="ctrl.attachErrMsg">操作失败：{{ctrl.attachErrMsg}}</span>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

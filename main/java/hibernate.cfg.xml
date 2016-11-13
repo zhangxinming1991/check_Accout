@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+        <property name="hibernate.connection.password">1234</property>
+        <property name="hibernate.connection.url">jdbc:mysql:///check_a_db?useSSL=false</property>
+        <property name="hibernate.connection.username">sany</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hibernate.search.autoregister_listeners">true</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        <mapping resource="entity/CusSecondstore.hbm.xml" />
+        <mapping resource="entity/OpLog.hbm.xml" />
+        <mapping resource="entity/PayRecord.hbm.xml" />
+        <mapping resource="entity/OriOrderBackup.hbm.xml" />
+        <mapping resource="entity/ConnectPerson.hbm.xml" />
+        <mapping resource="entity/BankInputBackup.hbm.xml" />
+        <mapping resource="entity/OriOrder.hbm.xml" />
+        <mapping resource="entity/Assistance.hbm.xml" />
+        <mapping resource="entity/Agent.hbm.xml" />
+        <mapping resource="entity/BankInput.hbm.xml" />
+        <mapping resource="entity/CusSdstoreBackup.hbm.xml" />
+        <mapping resource="entity/CaresultHistory.hbm.xml" />
+        <mapping resource="entity/Backup.hbm.xml" />
+        <mapping resource="entity/PayRecordHistory.hbm.xml" />
+        <mapping resource="entity/PayRecordCache.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

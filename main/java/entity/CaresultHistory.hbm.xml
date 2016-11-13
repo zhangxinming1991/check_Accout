@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.CaresultHistory" table="caresult_history" catalog="check_a_db" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="caid" type="string">
+            <column name="caid" length="30" not-null="true">
+                <comment>&#182;&#212;&#213;&#203;&#189;&#225;&#185;&#251;id</comment>
+            </column>
+        </property>
+        <property name="cayear" type="string">
+            <column name="cayear" length="4">
+                <comment>&#182;&#212;&#213;&#203;&#196;&#234;&#183;&#221;</comment>
+            </column>
+        </property>
+        <property name="camonth" type="string">
+            <column name="camonth" length="2">
+                <comment>&#182;&#212;&#213;&#203;&#212;&#194;&#183;&#221;</comment>
+            </column>
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="50">
+                <comment>&#182;&#212;&#213;&#203;&#189;&#225;&#185;&#251;&#193;&#180;&#189;&#211;</comment>
+            </column>
+        </property>
+        <property name="owner" type="string">
+            <column name="owner" length="30">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;id</comment>
+            </column>
+        </property>
+        <property name="caresult" type="java.lang.Character">
+            <column name="caresult" length="1">
+                <comment>
+                &#182;&#212;&#213;&#203;&#189;&#225;&#185;&#251;&#163;&#172;F&#180;&#250;&#177;&#237;&#205;&#234;&#179;&#201;&#163;&#172;D&#189;&#248;&#208;&#208;</comment>
+            </column>
+        </property>
+        <property name="lastcaid" type="java.lang.Boolean">
+            <column name="lastcaid">
+                <comment>&#201;&#207;&#180;&#206;&#182;&#212;&#213;&#203;&#181;&#196;caid</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

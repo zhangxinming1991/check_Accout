@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.CusSecondstore" table="cus_secondstore" catalog="check_a_db" optimistic-lock="version">
+        <id name="client" type="string">
+            <column name="client" length="60" />
+            <generator class="assigned" />
+        </id>
+        <property name="input" type="java.lang.Double">
+            <column name="input" precision="22" scale="0" />
+        </property>
+        <property name="updateTime" type="string">
+            <column name="update_time" length="10" />
+        </property>
+        <property name="contractMes" type="string">
+            <column name="contract_mes" length="1000">
+                <comment>&#191;&#205;&#187;&#167;&#181;&#196;&#186;&#207;&#205;&#172;&#208;&#197;&#207;&#162;</comment>
+            </column>
+        </property>
+        <property name="contractNum" type="java.lang.Integer">
+            <column name="contract_num">
+                <comment>&#186;&#207;&#205;&#172;&#184;&#246;&#202;&#253;</comment>
+            </column>
+        </property>
+        <property name="owner" type="string">
+            <column name="owner" length="10">
+                <comment>&#191;&#205;&#187;&#167;&#203;&#249;&#202;&#244;&#180;&#250;&#192;&#237;&#201;&#204;</comment>
+            </column>
+        </property>
+        <property name="total" type="java.lang.Integer">
+            <column name="total">
+                <comment>&#177;&#163;&#180;&#230;&#215;&#220;&#182;&#238;</comment>
+            </column>
+        </property>
+        <property name="accoutMes" type="string">
+            <column name="accout_mes" length="100">
+                <comment>&#191;&#205;&#187;&#167;&#181;&#196;&#186;&#207;&#205;&#172;&#208;&#197;&#207;&#162;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

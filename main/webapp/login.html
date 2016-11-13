@@ -1,0 +1,50 @@
+<div class="col-md-offset-5 col-md-2 col-sm-4 col-xs-6">
+    <div class="panel-heading">
+        <h3 class="text-center">登陆</h3>
+    </div>
+    <form name="loginForm" role="form" class="" novalidate>
+        <!--ng-controller="loginFormCtrl"-->
+
+        <!--	<div class="form-group row">
+                <label class="control-label  col-md-3">人员类型：
+                    <select ng-model="formUser.role" class="form-control col-md-3">
+                        <option value="U">财务人员</option>
+                        <option value="M">财务总监</option>
+                        <option value="S">系统管理员</option>
+                    </select>
+                </label>
+            </div>-->
+        <!--<div class="form-group row">-->
+        <!--<label class=" control-label">登陆名：</label>-->
+        <input name="uid" class="form-control " type="text" ng-model="formUser.uid" pattern="^[a-zA-Z0-9]{1,}"
+               placeholder="登录名" style="ime-mode: inactive" ng-required data-error="登录名格式有误" autofocus
+               ng-class="{ 'has-error' : loginForm.uid.$invalid && !loginForm.uid.$pristine }">
+        <!--</div>-->
+        <!--<div class="form-group form-inline">-->
+        <!--<label class=" control-label">密码：</label>-->
+        <input name="upwd" type="password" ng-model="formUser.upwd" placeholder="密码" class="form-control" ng-required
+               data-error="密码格式有误"
+               ng-class="{ 'has-error' : loginForm.upwd.$invalid && !loginForm.upwd.$pristine }">
+        <!--&lt;!&ndash; <div class="help-block with-errors">密码错误</div> &ndash;&gt;-->
+        <!--</div>-->
+        <div ng-show="errMsg" ng-bind="errMsg" class="help-block with-errors"></div>
+        <!--<div class="form-group form-inline hidden">-->
+            <!--<label>-->
+                <!--<input name="rememberMe" ng-model="formUser.rememberMe" type="checkbox"/>-->
+                <!--自动登陆-->
+            <!--</label>-->
+        <!--</div>-->
+        <div class="form-group">
+            <button type="submit" class="btn btn-block btn-primary" ng-click="submitForm()"
+                    title="{{loginForm.$invalid?'输入有误':''}}"
+                    ng-disabled="loginForm.$invalid">
+                登陆
+            </button>
+        </div>
+
+        <div>
+            <a data-ui-sref="resetPassword" class="pull-left">忘记密码？</a>
+            <button class="btn btn-link pull-right" ui-sref="register">注册</button>
+        </div>
+    </form>
+</div>

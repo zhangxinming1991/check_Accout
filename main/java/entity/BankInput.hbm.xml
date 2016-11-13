@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.BankInput" table="bank_input" catalog="check_a_db" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="payer" type="string">
+            <column name="payer" length="60">
+                <comment>&#184;&#182;&#191;&#238;&#200;&#203;</comment>
+            </column>
+        </property>
+        <property name="money" type="java.lang.Double">
+            <column name="money" precision="22" scale="0">
+                <comment>&#184;&#182;&#191;&#238;&#189;&#240;&#182;&#238;</comment>
+            </column>
+        </property>
+        <property name="payWay" type="string">
+            <column name="pay_way" length="30">
+                <comment>&#184;&#182;&#191;&#238;&#183;&#189;&#202;&#189;</comment>
+            </column>
+        </property>
+        <property name="payerAccount" type="string">
+            <column name="payer_account" length="11">
+                <comment>&#184;&#182;&#191;&#238;&#213;&#202;&#186;&#197;</comment>
+            </column>
+        </property>
+        <property name="payid" type="java.lang.Integer">
+            <column name="payid">
+                <comment>&#202;&#214;&#187;&#250;&#184;&#182;&#191;&#238;&#188;&#199;&#194;&#188;</comment>
+            </column>
+        </property>
+        <property name="contractNum" type="string">
+            <column name="contract_num" length="30">
+                <comment>&#186;&#207;&#205;&#172;&#186;&#197;</comment>
+            </column>
+        </property>
+        <property name="status" type="java.lang.Boolean">
+            <column name="status" />
+        </property>
+        <property name="inputTime" type="string">
+            <column name="input_time" length="10">
+                <comment>&#181;&#189;&#213;&#202;&#200;&#213;&#198;&#218;</comment>
+            </column>
+        </property>
+        <property name="payee" type="string">
+            <column name="payee" length="60">
+                <comment>&#202;&#213;&#191;&#238;&#200;&#203;</comment>
+            </column>
+        </property>
+        <property name="payeeAccount" type="string">
+            <column name="payee_account" length="20">
+                <comment>&#202;&#213;&#191;&#238;&#213;&#202;&#186;&#197;</comment>
+            </column>
+        </property>
+        <property name="isConnect" type="java.lang.Boolean">
+            <column name="isConnect">
+                <comment>&#202;&#199;&#183;&#241;&#186;&#205;&#184;&#182;&#191;&#238;&#188;&#199;&#194;&#188;&#185;&#216;&#193;&#170;</comment>
+            </column>
+        </property>
+        <property name="manyContract" type="string">
+            <column name="many_contract" length="1000">
+                <comment>&#182;&#224;&#186;&#207;&#205;&#172;&#184;&#182;&#191;&#238;</comment>
+            </column>
+        </property>
+        <property name="connectNum" type="java.lang.Integer">
+            <column name="connect_num">
+                <comment>
+                &#185;&#216;&#193;&#170;&#186;&#207;&#205;&#172;&#181;&#196;&#189;&#225;&#185;&#251;&#163;&#172;0&#163;&#186;&#195;&#187;&#211;&#208;&#185;&#216;&#193;&#170;</comment>
+            </column>
+        </property>
+        <property name="connectClient" type="string">
+            <column name="connect_client" length="21">
+                <comment>&#185;&#216;&#193;&#170;&#191;&#205;&#187;&#167;&#181;&#196;&#189;&#225;&#185;&#251;</comment>
+            </column>
+        </property>
+        <property name="owner" type="string">
+            <column name="owner" length="10">
+                <comment>&#201;&#207;&#180;&#171;&#213;&#223;id</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

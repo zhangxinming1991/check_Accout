@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.OpLog" table="op_log" catalog="check_a_db" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="time" type="string">
+            <column name="time" length="22" />
+        </property>
+        <property name="usertype" type="string">
+            <column name="usertype" length="15" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="30" />
+        </property>
+        <property name="content" type="string">
+            <column name="content" length="30" />
+        </property>
+        <property name="result" type="string">
+            <column name="result" length="30" />
+        </property>
+    </class>
+</hibernate-mapping>

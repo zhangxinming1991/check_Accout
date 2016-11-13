@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>三一财务对账</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+  </head>
+
+  <body onload="checkCookie()" onresize="changeSize()">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">账单系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right small">
+            <li><a id="loginBtn"
+              data-toggle="modal" data-target="#loginModal">
+              登录</a></li>
+            <li><a href="#" id="registerBtn">
+              注册</a></li>
+            <li><a href="#" id="usernameBtn" style="display:none" data-toggle="modal" data-target="#userInfoModal">
+              username</a></li>
+            <li><a href="#" id="loginoutBtn" style="display:none" onclick="loginOut()">
+              退出</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="main.html">账单信息</a></li>
+            <li class="active"><a href="#">新建账单</a></li>
+          </ul>
+        </div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-5 col-md-offset-4 main">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="amount" class="col-sm-2 control-label">付款金额:</label>
+            <div class="col-sm-7">
+              <input type="number" class="form-control" id="amount" placeholder="请输入付款金额">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="receiver" class="col-sm-2 control-label">款项接受人 :</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="receiver" placeholder="请输入款项接受人">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="paymethod" class="col-sm-2 control-label">付款方式 :</label>
+            <div class="col-sm-7">
+              <select id="payMethod" class="form-control">
+                <option>现金</option>
+                <option>支票</option>
+                <option>电汇</option>
+                <option>其他</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account" class="col-sm-2 control-label">付款账户 :</label>
+            <div class="col-sm-7">
+              <div class="input-group">
+                <input type="text" class="form-control" id="account" placeholder="请输入收款账户">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="accountBtn">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class= "dropdown-menu pull-right" id="selectAccount">
+                  </ul>
+                </div><!-- /btn-group -->
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div>
+          <div class="form-group">
+            <label for="owner" class="col-sm-2 control-label">代理商 :</label>
+            <div class="col-sm-7">
+              <select id="agent" class="form-control">
+              <option>广东代理商</option>
+              <option>安徽代理商</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+             <label for="evidence" class="col-sm-2 control-label">凭证:</label>
+              <div class="col-sm-7">
+                <input type="file" id="evidence" placeholder="请上传凭证">
+             </div>
+           </div>
+          <div class="form-group">
+            <label for="compactinfo" class="col-sm-2 control-label">合同详情:</label>
+              <div class="col-sm-4">
+                <button id="addCompactItem" type="button" class="btn btn-primary btn-sm col-md-offset-10" onclick="addCompactInfo('')">添加</button>
+              </div>
+           </div>
+           <div class="form-group">
+              <div class="table-responsive col-sm-8 col-md-offset-1">
+                <table id="compactInfos" class="table table-striped">
+                </table>
+              </div>
+            </div>
+           <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-4">
+                <button type="button" class="btn btn-primary btn-block" onclick="submitOrderInfo()">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h1 class="text-center text-primary">登录</h1>
+          </div>
+          <div class="modal-body">
+            <form action="" class="form col-md-12 center-block">
+              <div class="form-group">
+                <input id="username" type="text" class="form-control input-lg" placeholder="用户名">
+              </div>
+              <div class="form-group">
+                <input id="psword" type="password" class="form-control input-lg" placeholder="密码">
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="clickLoginBtn()">立刻登录</button>
+                <span><a href="#">找回密码</a></span>
+                <span><a href="#" class="pull-right">注册</a></span>
+              </div>
+            </form>
+          </div>
+          <div id="modalFooter" class="modal-footer">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 个人信息窗口 -->
+    <div id="userInfoModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h2 class="text-center text-primary">个人信息</h2>
+          </div>
+          <div class="modal-body">
+            <form action="" class="form col-md-12 center-block form-horizontal">
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">真实姓名 :</label>
+                <label id="trueName" class="col-sm-4">真实姓名 :</label>
+              </div>
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">所属单位 :</label>
+                <label id="company" class="col-sm-4">所属单位 :</label>
+              </div>
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">手机号 :</label>
+                <label id="telephone" class="col-sm-4">手机号 :</label>
+              </div>
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">微信号 :</label>
+                <label id="wechatId" class="col-sm-4">微信号 :</label>
+              </div>
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">代理商 :</label>
+                <label id="owner" class="col-sm-4">代理商 :</label>
+              </div>
+              <div class="form-group ">
+                <label class="col-sm-4 col-md-offset-1">积分 :</label>
+                <label id="score" class="col-sm-4">积分 :</label>
+              </div>
+            </form>
+          </div>
+          <div id="modalFooter" class="modal-footer">      
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="jquery-1.11.3.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="bootstrap.min.js"></script>
+      <!-- AES 加密 -->
+  <script src="AES.min.js"></script>
+  <!-- JSON! -->
+  <script src="jquery.json.js"></script>
+  <!-- 处理页面交互、请求响应的JS函数 -->
+  <script type="text/javascript">
+   // var IP = "http://119.29.235.201:8080";
+    var IP = "http://192.168.138.2:8080";
+    function clickLoginBtn(){
+        var username = $("#username").val();
+        if(username == '')
+        {
+          $("#modalFooter").html("<font color=red>用户名不能为空</font>");
+          return;
+        }
+        var psword = $("#psword").val();
+        if(psword == '')
+        {
+          $("#modalFooter").html("<font color=red>密码不能为空</font>");
+          return;
+        }
+        var postContent = {
+          "username": Encrypt(username),
+          "password": Encrypt(psword), 
+        };
+        $.ajax({
+            url: IP + "/check_Accout/PMController/ConnectPLogin",
+          //  url: "http://192.168.138.2:8080/check_Accout/PMController/ConnectPLogin",
+            data: postContent,
+            type: "POST",
+            dataType: "json",
+            success: function(data, status){
+              if(data.status != 0)
+                loginError();
+              else{
+                var userInfo = Decrypt(data.connectp);
+                setCookie("username", username, 0.1);
+                setCookie("name", encodeURI(userInfo.realName), 0.1);
+                setCookie("company", encodeURI(userInfo.company), 0.1);
+                setCookie("telephone", userInfo.phone, 0.1);
+                setCookie("wechatId", userInfo.weixin, 0.1);
+                setCookie("owner", userInfo.agent, 0.1);
+                setCookie("score", userInfo.score, 0.1);
+                location.reload();
+              }
+            }
+        });
+    }
+    function loginError() {
+      // body...
+      $("#modalFooter").html("<font color=red>用户名或密码错误</font>");
+    }
+    // 登录时设置cookie
+    function setCookie(cname,cvalue,exdays)
+    {
+      var d = new Date();
+      d.setTime(d.getTime()+(exdays*24*60*60*1000));
+      var expires = "expires="+d.toGMTString();
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+    // 获取cookie值，一般为username
+    function getCookie(cname)
+    {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0; i<ca.length; i++) 
+        {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+      }
+      return "";
+    }
+    // loginout
+    function deleteCookie(cname)
+    {
+      var d = new Date();
+      d.setTime(d.getTime()-(60*60*1000));
+      var expires = "expires="+d.toGMTString();
+      document.cookie = cname + "= ''" + "; " + expires;
+    }
+    function addCompactInfo(value){
+      var oTable = document.getElementById("compactInfos");
+      oTable.insertRow(0);
+      var newCell = oTable.rows[0].insertCell(0);
+      if(value == '')
+        newCell.innerHTML="<div class='col-sm-10'>"+
+                          "<input type='text' class='form-control' placeholder='合同号'>"+
+                        "</div>";
+      else
+        newCell.innerHTML="<div class='col-sm-10'>"+
+                          "<input type='text' class='form-control' value="+ value +">"+
+                        "</div>";
+      newCell = oTable.rows[0].insertCell(1);
+      newCell.innerHTML="<div class='col-sm-8'><input type='number'class='form-control' placeholder='金额'></div>";
+      newCell = oTable.rows[0].insertCell(2);
+      newCell.innerHTML="<button type='button' class='btn btn-primary btn-sm' onclick='delRow(this)'>删除</button>";
+
+    }
+    //得到行对象
+    function getRowObj(obj)
+    {
+      var i = 0;
+      while(obj.tagName.toLowerCase() != "tr"){
+        obj = obj.parentNode;
+        if(obj.tagName.toLowerCase() == "table")return null;
+        }
+      return obj;
+    }
+    //删除行
+    function delRow(obj){
+      var tr = this.getRowObj(obj);
+      if(tr != null)
+        tr.parentNode.removeChild(tr);
+      else
+        throw new Error("the given object is not contained by the table");
+    }
+    function submitOrderInfo(){
+      var username = Encrypt(getCookie("username"));
+      var amount = Encrypt(document.getElementById("amount").value);
+      var receiver = Encrypt(document.getElementById("receiver").value);
+      var account = Encrypt(document.getElementById("account").value);
+      var ownerId;
+      if(document.getElementById("agent").value == "广东代理商")
+        ownerId = "gd0001";
+      else if(document.getElementById("agent").value == "安徽代理商")
+        ownerId = "ah0001";
+      else
+        ownerId = "unknow";
+      var enwownerId = Encrypt(ownerId);
+      var payMethod = Encrypt(document.getElementById("payMethod").value);
+      var oTable = document.getElementById("compactInfos");
+      var length = oTable.rows.length;
+      var compactInfos = [];
+      for(var i = 0; i < length; i++){
+        var compactItem = {};
+        compactItem.contract = oTable.rows[i].cells[0].getElementsByTagName("input")[0].value;
+        compactItem.money= oTable.rows[i].cells[1].getElementsByTagName("input")[0].value;
+        compactInfos.push(compactItem);
+      }
+      console.log(compactInfos);
+      var formData = new FormData();
+      formData.append('username', username);
+      formData.append('pay_money', amount);
+      formData.append('receiver', receiver);
+      formData.append('pay_way', payMethod);
+      formData.append('pay_account', account);
+      formData.append('owner', enwownerId);
+      formData.append('many_pay', Encrypt($.toJSON(compactInfos)));
+      formData.append('file', $('#evidence')[0].files[0]);
+      $.ajax({
+        url: IP + '/check_Accout/ConnectP_Pay_Controller/upload_pay_2',
+    //    url: 'http://192.168.138.2:8080//check_Accout/ConnectP_Pay_Controller/upload_pay_2',
+        type: 'POST',
+        cache: false,
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function(res) {
+        alert("提交成功");
+        location.reload();
+    }).fail(function(res) {
+        alert("提交失败");
+    });
+    }
+    function changeSize(){
+      var account = document.getElementById("account");
+      var accountBtn =  document.getElementById("accountBtn");
+      var selectAccount = document.getElementById("selectAccount");
+      selectAccount.style.width=account.clientWidth +accountBtn.clientWidth + 'px';
+    }
+    function checkCookie(){
+      var username = getCookie("username");
+      var account = document.getElementById("account");
+      var accountBtn =  document.getElementById("accountBtn");
+      var selectAccount = document.getElementById("selectAccount");
+      selectAccount.style.width=account.clientWidth +accountBtn.clientWidth + 'px';
+      if(username != ''){
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("registerBtn").style.display = "none";
+        document.getElementById("usernameBtn").style.display = "block";
+        document.getElementById("usernameBtn").text = "欢迎, " + username;
+        document.getElementById("loginoutBtn").style.display = "block";
+        document.getElementById("trueName").firstChild.nodeValue = decodeURI(getCookie("name"));
+        document.getElementById("company").firstChild.nodeValue = decodeURI(getCookie("company"));
+        document.getElementById("telephone").firstChild.nodeValue = getCookie("telephone");
+        document.getElementById("wechatId").firstChild.nodeValue = getCookie("wechatId");
+        var realOwner = getCookie("owner");
+        var showOwner;
+        if(realOwner == "gd0001")
+          showOwner = "广东代理商";
+        else if(realOwner == "ah0001")
+          showOwner = "安徽代理商";
+        else
+          showOwner = realOwner;
+        document.getElementById("owner").firstChild.nodeValue = showOwner;
+        document.getElementById("score").firstChild.nodeValue = getCookie("score");
+        //var ownerSelect = document.getElementById("agent");
+        //ownerSelect.options.add(new Option(showOwner));
+        var params = {"username": Encrypt(username)};
+        $.ajax({
+            url: IP + "/check_Accout/ConnectP_Pay_Controller/get_contractandaccout",
+          //  url: "http://192.168.138.2:8080/check_Accout/ConnectP_Pay_Controller/get_contractandaccout",
+            data: params,
+            type: "get",
+            dataType: "json",
+            success: function(data, status){
+              if(data.flag != 0)
+                alert("获取常用信息失败");
+              else{
+                  var many_pay = JSON.parse(Decrypt(data.many_pay));
+                  var selectAccount = document.getElementById("selectAccount");
+                  for(var i = 0; i < many_pay.length; i++){
+                    addCompactInfo(many_pay[i].contract);
+                  }
+                  var account = JSON.parse(Decrypt(data.accout));
+                  for(var i = 0; i < account.length; i++){
+                      
+                      var li = document.createElement("li");
+                    li.innerHTML = "<div align='center' onclick='setAccount(this)'>"+ account[i] +"</div>";
+                    selectAccount.appendChild(li);
+                  }
+              }
+            }
+        });
+      }
+    }
+    function loginOut(){
+      deleteCookie("username");
+      window.location.href="main.html";
+    }
+    function setAccount(obj) {
+      // body...
+      var account = document.getElementById("account");
+      account.value = obj.innerHTML;
+    }
+  </script>
+  </body>
+</html>

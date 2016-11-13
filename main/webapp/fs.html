@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="sidebar col-md-1 col-sm-2 ">
+        <ul class="nav nav-sidebar">
+            <li ng-class="{active:activeState.indexOf('u.fs.a')==0}"><a data-ui-sref="u.fs.a" href title="审阅平台用户注册申请">注册审阅</a></li>
+            <li ng-class="{active:activeState.indexOf('u.fs.c')==0}"><a data-ui-sref="u.fs.c" href title="锁定或解锁用户">用户控制</a></li>
+            <li ng-class="{active:activeState.indexOf('u.fs.l')==0}"><a data-ui-sref="u.fs.l" href title="查看平台用户操作日志">用户日志</a></li>
+            <li ng-class="{active:activeState.indexOf('u.fs.d')==0}"><a data-ui-sref="u.fs.d" href title="">数据库备份</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-10 col-sm-offset-2 col-md-offset-1  main" data-ui-view=""></div>
+</div>

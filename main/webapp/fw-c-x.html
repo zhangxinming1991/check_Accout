@@ -1,0 +1,312 @@
+<div>
+    <uib-tabset>
+
+        <uib-tab select="sel(2)">
+            <uib-tab-heading title="未到账的货款" class="text-danger">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>未到账货款
+            </uib-tab-heading>
+            <div ng-include="'x-order.html'" ng-controller="X2Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(1)">
+            <uib-tab-heading title="无法匹配到合同或客户的出纳" class="text-danger">
+                <span class="glyphicon glyphicon-question-sign"></span>无匹配同客户的出纳
+            </uib-tab-heading>
+            <div ng-include="'x-trans.html'" ng-controller="X1Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(3)">
+            <uib-tab-heading title="无实际出纳的用户上传付款通知" class="text-danger">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>无出纳的付款通知
+            </uib-tab-heading>
+            <div ng-include="'x-notif.html'" ng-controller="X3Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(4)">
+            <uib-tab-heading title="匹配到合同的出纳" class="text-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>有匹配合同的出纳
+            </uib-tab-heading>
+            <div ng-include="'x-trans.html'" ng-controller="X4Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(5)">
+            <uib-tab-heading title="匹配客户的出纳（不包含匹配到合同的出纳）" class="text-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>有匹配客户的出纳
+            </uib-tab-heading>
+            <div ng-include="'x-trans.html'" ng-controller="X5Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(6)">
+            <uib-tab-heading title="有用户上传付款通知的出纳" class="text-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>有出纳的付款通知
+            </uib-tab-heading>
+            <div ng-include="'x-notif.html'" ng-controller="X6Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(7)">
+            <uib-tab-heading title="已到账的货款" class="text-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>已到账货款
+            </uib-tab-heading>
+            <div ng-include="'x-order.html'" ng-controller="X7Ctrl"></div>
+        </uib-tab>
+
+        <uib-tab select="sel(8)">
+            <uib-tab-heading title="无效、不可用的用户上传付款通知" class="text-muted">
+                <span class="glyphicon glyphicon-trash"></span>无效付款通知
+            </uib-tab-heading>
+            <div ng-include="'x-notif.html'" ng-controller="X8Ctrl"></div>
+        </uib-tab>
+
+
+        <uib-tab>
+            <uib-tab-heading title="导出报表到本机文件" class="text-info">
+                <span class="glyphicon glyphicon-floppy-save"></span>对账结果操作
+            </uib-tab-heading>
+            <div class="">
+                <br>
+                <br>
+                <div class="">
+                    <a class="btn btn-primary" ng-href="{{fileExportedUrl}}" target="_blank">导出报表</a>
+                    <p class="text-danger text-center" ng-show="exportErr">{{exportErr}}</p>
+                </div>
+                <div ng-hide="resultChkd">
+                    <div>
+                        <br>
+                        <br>
+                        <p>
+                            对账结果<strong class="text-info">有误</strong>？我要
+                            <button class="btn btn-danger" ng-click="startOver()">重新对账</button>
+                        </p>
+                    </div>
+                    <div>
+                        <br>
+                        <br>
+                        <p>
+                            <strong class="text-info">无误</strong>？给对账联系人
+                            <button class="btn btn-success" ng-click="acceptResult()">返利</button>
+                        </p>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
+<script type="text/ng-template" id="x-trans.html">
+    <table class="table table-bordered">
+        <caption class="text-center caption h5">{{gridCfg.tableCaption}}</caption>
+        <thead>
+        <tr>
+            <th>收款账户名称</th>
+            <th>付款人</th>
+            <th>付款金额</th>
+            <th>付款方式</th>
+            <th>到账日期</th>
+            <th ng-show="gridCfg.connectType=='A'">合同详情</th>
+            <th ng-show="gridCfg.connectType=='C'">客户名称</th>
+        </tr>
+        </thead>
+
+        <tbody ng-show="isNonEmptyGrid">
+        <tr ng-repeat="row in rows">
+            <td>{{row.payee}}</td>
+            <td>{{row.payer}}</td>
+            <td>{{row.money}}</td>
+            <td>{{row.payWay}}</td>
+            <td>{{row.inputTime}}</td>
+            <td ng-show="gridCfg.connectType=='A'" ng-click="gridCfg.attachDetail(row)"><span
+                    class="glyphicon glyphicon-eye-open"></span></td>
+            <td ng-show="gridCfg.connectType=='C'">{{row.connect[0]}}</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isNonEmptyGrid===false">
+        <tr>
+            <td colspan="20" class="text-center text-info">无数据</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="canShowError">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+
+    </table>
+</script>
+
+<script type="text/ng-template" id="contract-detail-box.html">
+    <div>
+        <div class="modal-header">
+            <span class="glyphicon glyphicon-remove top-right pull-right close" ng-click="closeMsgbox()"></span>
+            <h3 class="modal-title">合同详情</h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>合同号</th>
+                    <th>客户</th>
+                    <th>月回款</th>
+                    <th>在外金额</th>
+                    <th>合同总额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in gridRows track by $index">
+                    <td>{{row.orderNum}}</td>
+                    <td>{{row.client}}</td>
+                    <td>{{row.input}}</td>
+                    <td>{{row.debt}}</td>
+                    <td>{{row.total}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="closeMsgbox()">关闭</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="x-notif.html">
+    <table class="table table-bordered">
+        <caption class="text-center caption h5">{{gridCfg.tableCaption}}</caption>
+        <thead>
+        <tr>
+            <th>付款人</th>
+            <th>付款金额</th>
+            <th>付款方式</th>
+            <th>付款账号</th>
+            <th>款项接受人</th>
+            <th>对账联系人</th>
+            <th>到帐日期</th>
+            <!--<th>审阅结果</th>-->
+            <th ng-show="gridCfg.connectType=='H'">出纳详情</th>
+        </tr>
+        </thead>
+
+        <tbody ng-show="isNonEmptyGrid">
+        <tr ng-repeat="row in rows">
+            <td>{{row.payer}}</td>
+            <td>{{row.payMoney}}</td>
+            <td>{{row.payWay}}</td>
+            <td>{{row.payAccount}}</td>
+            <td>{{row.receiver}}</td>
+            <td>{{row.connPerson}}</td>
+            <td>{{row.inputTime}}</td>
+            <!--<td>{{row.checkResult}}</td>-->
+            <td ng-show="gridCfg.connectType=='H'" ng-click="gridCfg.attachDetail(row)"><span
+                    class="glyphicon glyphicon-eye-open"></span></td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isNonEmptyGrid===false">
+        <tr>
+            <td colspan="20" class="text-center text-info">无数据</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="canShowError">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/ng-template" id="trans-detail-box.html">
+    <div>
+        <div class="modal-header">
+            <span class="glyphicon glyphicon-remove top-right pull-right close" ng-click="closeMsgbox()"></span>
+            <h3 class="modal-title">出纳详情</h3>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>收款账户名称</th>
+                    <th>付款人</th>
+                    <th>付款金额</th>
+                    <th>付款方式</th>
+                    <th>到帐日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in gridRows track by $index">
+                    <td>{{row.payee}}</td>
+                    <td>{{row.payer}}</td>
+                    <td>{{row.money}}</td>
+                    <td>{{row.payWay}}</td>
+                    <td>{{row.inputTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="closeMsgbox()">关闭</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="x-order.html">
+    <table class="table table-bordered">
+        <caption class="text-center caption h5">{{gridCfg.tableCaption}}</caption>
+        <thead>
+        <tr>
+            <th>合同号</th>
+            <th>客户</th>
+            <th>本月回款</th>
+            <th>在外金额</th>
+            <th>合同总额</th>
+            <th ng-show="gridCfg.connectType=='T'">出纳详情</th>
+        </tr>
+        </thead>
+
+        <tbody ng-show="isNonEmptyGrid">
+        <tr ng-repeat="row in rows">
+            <td>{{row.orderNum}}</td>
+            <td>{{row.client}}</td>
+            <td>{{row.input}}</td>
+            <td>{{row.debt}}</td>
+            <td>{{row.total}}</td>
+            <!--<td>{{row.checkResult}}</td>-->
+            <td ng-show="gridCfg.connectType=='T'" ng-click="gridCfg.attachDetail(row)"><span
+                    class="glyphicon glyphicon-eye-open"></span></td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isNonEmptyGrid===false">
+        <tr>
+            <td colspan="20" class="text-center text-info">无数据</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="canShowError">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>

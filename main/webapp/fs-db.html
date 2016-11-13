@@ -1,0 +1,67 @@
+<div>
+    <uib-tabset>
+        <uib-tab>
+            <uib-tab-heading>备份</uib-tab-heading>
+            <div><p class="text-center h3">数据库备份操作</p><br><a class="btn btn-primary text-center " ng-click="backupDB()">备份数据库</a></div>
+        </uib-tab>
+        <uib-tab select="restorePoints()">
+            <uib-tab-heading>恢复</uib-tab-heading>
+            <div>
+                <p class="text-center h3">数据库恢复操作</p>
+                <br>
+                <div>
+                    <div>
+                        <table st-table="dispItems" st-safe-src="items" class="table table-bordered table-striped">
+                            <!--<caption class="caption h3 text-center" title="">已备份时间点
+                            </caption>-->
+                            <thead>
+                            <!--<tr>
+                                <th></th>
+                                <th><input st-search="timeStr" placeholder="时间点" type="search"
+                                           class="input-sm form-control">
+                                </th>
+                            </tr>-->
+                            <tr>
+                                <th>序号</th>
+                                <th st-sort="workId">时间点</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody ng-show="items!==undefined&&items.length>0" class="">
+                            <tr ng-repeat="t in dispItems">
+                                <td>{{$index+1}}</td>
+                                <td>{{t.timeStr}}</td>
+
+                                <td>
+                                    <button ng-click="restoreDB(t)" class=" btn btn-danger">恢复</button>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                            <tbody ng-show="items!==undefined&&items.length==0">
+                            <tr>
+                                <td colspan="20" class="text-center text-info">无数据</td>
+                            </tr>
+                            </tbody>
+
+                            <tbody ng-show="isLoading">
+                            <tr>
+                                <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+                            </tr>
+                            </tbody>
+
+                            <tbody ng-show="errMsg">
+                            <tr>
+                                <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+                            </tr>
+                            </tbody>
+
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>

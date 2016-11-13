@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.Assistance" table="assistance" catalog="check_a_db" optimistic-lock="version">
+        <id name="workId" type="string">
+            <column name="workId" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="sourceSet" type="string">
+            <column name="sourceSet" length="30" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="10" not-null="true" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="11" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="20" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="20" not-null="true" />
+        </property>
+        <property name="usertype" type="string">
+            <column name="usertype" length="2" not-null="true" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="20" />
+        </property>
+        <property name="agentid" type="string">
+            <column name="agentid" length="10">
+                <comment>&#203;&#249;&#202;&#244;&#180;&#250;&#192;&#237;&#201;&#204;id</comment>
+            </column>
+        </property>
+        <property name="flag" type="java.lang.Integer">
+            <column name="flag">
+                <comment>&#215;&#162;&#178;&#225;&#177;&#234;&#214;&#190; 0&#163;&#186;&#179;&#201;&#185;&#166;&#215;&#162;&#178;&#225;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

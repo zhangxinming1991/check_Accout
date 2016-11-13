@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>三一公司财务对账系统</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/progress-wizard.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body data-ng-app="sany">
+<div ng-controller="indexCtrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid" style="position: relative">
+            <!--<div class="navbar-header">-->
+            <div>
+                <span class="navbar-brand">财务对账系统</span>
+            </div>
+            <div class="">
+                <div ng-hide="loggedInUser" style="display: none">
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right small">
+                            <li><a id="loginBtn" data-toggle="modal" data-target="#loginModal" href="">登录</a></li>
+                            <li><a id="registerBtn" data-toggle="modal" data-target="#registerModal" href=""
+                                   class="">注册</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="display: none" ng-show="loggedInUser" class="dropdown">
+                    <!--<a class="dropdown-toggle " data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span><span class="caret"></span></a>
+                    &lt;!&ndash;<div class="navbar-collapse collapse">&ndash;&gt;
+                    &lt;!&ndash;<ul class="nav navbar-nav navbar-right small">&ndash;&gt;
+                    <ul class="dropdown-menu" role="menu" id="infoMenu">
+                        <li>
+                            <a ng-click="userInfo()" href>个人信息</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="" ng-click="signOut()" href>
+                                注销登录</a>
+                        </li>
+                    </ul>-->
+                    <!--</div>-->
+                    <div id="" class="nav navbar-nav navbar-right small " style="margin-right: 30px; margin-top: 15px; ">
+                    <span uib-dropdown on-toggle="toggled(open)">
+                        <button href id="infoOpMenu" uib-dropdown-toggle class="btn btn-primary" style="font-size: large; ">
+                            <span class="glyphicon glyphicon-user"></span><span style="color: white">{{loggedInUser.name | limitTo:4}}</span><span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="infoOpMenu">
+                             <li>
+                            <a ng-click="userInfo()" href>个人信息</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="" ng-click="signOut()" href>
+                                注销登录</a>
+                        </li>
+                        </ul>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="loginModal" class="modal fade" aria-hidden="true" ng-controller="SignInCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h2 class="text-center text-primary modal-title">登录</h2>
+                </div>
+                <div class="modal-body">
+                    <!--<form action="" class="form col-md-12 center-block">
+                        <div class="form-group">
+                            <input id="username" class="form-control input-lg" placeholder="用户名" type="text">
+                        </div>
+                        <div class="form-group">
+                            <input id="psword" class="form-control input-lg" placeholder="密码" type="password">
+                        </div>
+                        <div class="form-group">
+                            <button id="clickLoginBtn" class="btn btn-primary btn-lg btn-block">立刻登录</button>
+                            <span><a href="">找回密码</a></span>
+                            <span><a href="" class="pull-right">注册</a></span>
+                        </div>
+                    </form>-->
+                    <form name="loginForm" id="loginForm" role="form" data-toggle="validator" class="form center-block"
+                          ng-init="formUser.role='U'">
+                        <!--ng-controller="loginFormCtrl"-->
+
+                        <!--                        	<div class="form-group row">
+                                                        <label class="control-label  col-md-3">人员类型：
+                                                            <select ng-model="formUser.role" class="form-control col-md-3">
+                                                                <option value="U">财务人员</option>
+                                                                <option value="M">财务总监</option>
+                                                                &lt;!&ndash;<option value="S">系统管理员</option>&ndash;&gt;
+                                                            </select>
+                                                        </label>
+                                                    </div>-->
+                        <div class="btn-group form-group">
+                            <button ng-model="formUser.role" uib-btn-radio="'U'" class="btn"
+                                    ng-class="formUser.role=='U'?'btn-primary':'btn-default'" type="button">
+                                财务员
+                            </button>
+                            <button ng-model="formUser.role" uib-btn-radio="'M'" class="btn"
+                                    ng-class="formUser.role=='M'?'btn-primary':'btn-default'" type="button">
+                                管理员
+                            </button>
+                            <!--<button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'S'" class="btn"-->
+                            <!--ng-class="signUpCtrl.formUser.role=='S'?'btn-primary':'btn-default'" type="button">系统管理员-->
+                            <!--</button>-->
+                        </div>
+                        <div class="form-group">
+                            <!--<label class=" control-label">登陆名：</label>-->
+                            <input name="uid" id="loginUid" class="form-control input-lg" type="text"
+                                   ng-model="formUser.uid"
+                                   pattern="^[a-zA-Z0-9]{1,}"
+                                   placeholder="登录名" style="ime-mode: inactive" data-error="登录名格式有误"
+                                   autofocus required>
+                            <!--ng-class="{ 'has-error' : loginForm.uid.$invalid && !loginForm.uid.$pristine }"-->
+                        </div>
+                        <div class="form-group">
+                            <!--<label class=" control-label">密码：</label>-->
+                            <input name="upwd" type="password" ng-model="formUser.upwd" placeholder="密码"
+                                   class="form-control input-lg"
+                                   data-error="密码格式有误" required
+                            >
+                            <!--ng-class="{ 'has-error' : loginForm.fjdfdsdupwd.$invalid && !loginForm.upwd.$pristine }"-->
+                            <!--&lt;!&ndash; <div class="help-block with-errors">密码错误</div> &ndash;&gt;-->
+                        </div>
+                        <div ng-show="errMsg" ng-bind="errMsg" class=" with-errors text-danger"></div>
+                        <!--<div class="form-group form-inline hidden">-->
+                        <!--<label>-->
+                        <!--<input name="rememberMe" ng-model="formUser.rememberMe" type="checkbox"/>-->
+                        <!--自动登陆-->
+                        <!--</label>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-primary input-lg" ng-click="submitForm()"
+                                    title="{{loginForm.$invalid?'输入有误':''}}"
+                            >
+                                <!--ng-disabled="loginForm.$invalid"-->
+                                登陆
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="modalFooter" class="modal-footer">
+                    <div class="form-group">
+                        <!--<a class="pull-left" onclick="$('#loginModal').modal('hide')">忘记密码？</a>-->
+                        <button class="btn btn-link pull-right btn-lg"
+                                onclick="$('#loginModal').modal('hide');$('#registerModal').modal('show')">注册
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal fade" aria-hidden="true" ng-controller="SignUpCtrl as signUpCtrl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h2 class="text-center text-primary">注册</h2>
+                </div>
+                <div class="modal-body">
+                    <form name="signUpForm" id="signUpForm" data-toggle="validator" role="form"
+                          ng-init="signUpCtrl.formUser.role='U'"
+                    >
+                        <!--用户角色-->
+                        <!--                        <div class="btn-group form-group">
+                                                    <button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'U'" class="btn"
+                                                            ng-class="signUpCtrl.formUser.role=='U'?'btn-primary':'btn-default'" type="button">
+                                                        财务人员
+                                                    </button>
+                                                    <button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'M'" class="btn"
+                                                            ng-class="signUpCtrl.formUser.role=='M'?'btn-primary':'btn-default'" type="button">
+                                                        财务总监
+                                                    </button>
+                                                    &lt;!&ndash;<button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'S'" class="btn"&ndash;&gt;
+                                                    &lt;!&ndash;ng-class="signUpCtrl.formUser.role=='S'?'btn-primary':'btn-default'" type="button">系统管理员&ndash;&gt;
+                                                    &lt;!&ndash;</button>&ndash;&gt;
+                                                </div>-->
+                        <!--登录名域-->
+                        <div class="form-group">
+                            <!--<label  class="control-label">登录名：</label>-->
+                            <input type="text" ng-model="signUpCtrl.formUser.uid" pattern="^[a-zA-Z0-9]{1,}"
+                                   placeholder="登录名"
+                                   class="form-control"
+                                   required>
+                            <!--<div class="help-block with-errors">无效/已存在</div>-->
+                        </div>
+                        <!--密码域-->
+                        <div class="form-group">
+                            <!--<label  class="control-label">密码：</label>-->
+                            <input id="inputPwd" type="password" ng-model="signUpCtrl.formUser.upwd" placeholder="密码"
+                                   class="form-control"
+                                   required>
+                            <!-- <div class="help-block with-errors">密码错误</div> -->
+                        </div>
+                        <div class="form-group">
+                            <input type="text" ng-model="signUpCtrl.formUser.name" placeholder="真实姓名"
+                                   class="form-control"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" ng-model="signUpCtrl.formUser.email" placeholder="电子邮箱"
+                                   class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" ng-model="signUpCtrl.formUser.phone" placeholder="电话" class="form-control"
+                                   required>
+                        </div>
+                        <div class="form-group has-feedback ">
+                            <div class="">
+                                <input type="text" ng-model="signUpCtrl.formUser.agent" placeholder="所属代理商"
+                                       uib-typeahead=" agent as agent.name for agent in agents | filter:{name:$viewValue}"
+                                       class="form-control" typeahead-editable="false"
+                                       typeahead-show-hint="true" typeahead-min-length="0">
+                            </div>
+                            <!--<span class="glyphicon glyphicon-search " style="" ></span>-->
+                            <!--<span class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+                            <!--<span class="glyphicon glyphicon-refresh form-control-feedback"></span>-->
+                        </div>
+                        <!-- <div class="form-group">
+                             <input type="text" ng-model="signUpCtrl.formUser.inviteCode" placeholder="注册邀请码"
+                                    class="form-control" required>
+                         </div>-->
+                        <div class="with-errors text-danger" ng-bind="signUpCtrl.errMsg"></div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" ng-click="signUpCtrl.submitForm()"
+                            >注册
+                                <!--ng-disabled="signUpForm.$invalid"-->
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div>已有账户？我要
+                        <button class="btn btn-link"
+                                onclick="$('#registerModal').modal('hide');$('#loginModal').modal('show')">登陆
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" data-ui-view="">
+    </div>
+</div>
+
+<script id="fw.html" type="text/ng-template">
+    <div class="row">
+        <div class="sidebar col-md-2 col-sm-2">
+            <ul class="nav nav-sidebar">
+                <li ng-class="{active:activeState.indexOf('u.fw.v')==0}" ng-disabled="inChecking"><a data-ui-sref="u.fw.v" >预览付款记录</a></li>
+                <li ng-class="{active:activeState.indexOf('u.fw.p')==0}"><a ng-click="checkingEnv()" href>进入对账流程</a>
+                </li>
+                <li ng-class="{active:activeState.indexOf('u.fw.h')==0}" ng-disabled="inChecking"><a data-ui-sref="u.fw.h">查看历史结果</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main"
+             data-ui-view=""></div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="msgbox.html">
+    <div>
+        <div class="modal-header">
+            <span class="glyphicon glyphicon-remove top-right pull-right close" ng-click="closeMsgbox()"
+                  ng-hide="msgCfg.noCloseBtn"></span>
+            <h3 class="modal-title" ng-bind="msgCfg.title">消息</h3>
+        </div>
+        <div class="modal-body" ng-bind-html="msgCfg.msgHtml"></div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="okBtnClick()" ng-show="msgCfg.okBtn">确定</button>
+            <button class="btn btn-default" ng-click="cancelBtnClick()" ng-show="msgCfg.cancelBtn">取消</button>
+            <button class="btn btn-default" ng-click="closeMsgbox()"
+                    ng-hide="(msgCfg.okBtn!==undefined||msgCfg.cancelBtn!==undefined)||msgCfg.noCloseBtn">关闭
+            </button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="u-info.html">
+    <div>
+        <h1>您好，<strong class="text-primary" ng-bind="loggedInUser.name"></strong>。</h1>
+    </div>
+</script>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-animate.min.js"></script>
+<script src="js/angular-sanitize.min.js"></script>
+<script src="js/ui-bootstrap-tpls.min.js"></script>
+<script src="js/angular-ui-router.min.js"></script>
+<script src="js/statehelper.min.js"></script>
+<script src="js/smart-table.min.js"></script>
+<script src="js/angular-cookies.min.js"></script>
+<script src="js/ng-file-upload-all.min.js"></script>
+<link type="text/css" href="css/angular-bootstrap-lightbox.min.css">
+<script src="js/angular-bootstrap-lightbox.min.js"></script>
+
+<script src="js/enc.js"></script>
+<script src="js/app.js"></script>
+<script src="js/app-filter.js"></script>
+<script src="js/app-service.js"></script>
+<script src="js/app-controller.js"></script>
+<script src="js/app-state.js"></script>
+<!--<script src="js/app-mock.js"></script>-->
+</body>
+</html>

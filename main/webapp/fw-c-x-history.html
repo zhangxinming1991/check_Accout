@@ -1,0 +1,127 @@
+<div>
+    <form class="" role="form" id="historyCheckForm">
+        <div class="form-group form-inline text-center">
+            <input class="form-control" ng-model="yearInput" placeholder="年份" type="number" min="{{minYear||0}}"
+                   max="{{maxYear}}" required autofocus>
+            <button type="submit" ng-disabled="historyCheckForm.$invalid" class="btn btn-primary"
+                    ng-click="formSubmit()">查看
+            </button>
+        </div>
+    </form>
+    <table class="table table-bordered text-center" ng-show="true">
+        <caption class="h3 text-center" ng-show="year">{{year}}年对账结果</caption>
+        <tbody ng-show="isNonEmptyGrid">
+        <tr>
+            <th class="text-center">1月</th>
+            <th class="text-center">2月</th>
+            <th class="text-center">3月</th>
+            <th class="text-center">4月</th>
+            <th class="text-center">5月</th>
+            <th class="text-center">6月</th>
+        </tr>
+        <tr>
+            <td ng-repeat="m in [1,2,3,4,5,6]">
+                <div ng-show="historyResults[m]">
+                    <p href="{{historyResults[m].url}}" class="btn btn-primary" target="_blank">
+                        <span class="glyphicon glyphicon-cloud-download" title="下载结果"></span>
+                        下载结果
+                    </p>
+                    <p class="btn btn-danger" ng-click="recheck(year, m)">
+                        <span class="glyphicon glyphicon-trash" title="重新对账（谨慎）"></span>
+                        重新对账
+                    </p>
+                </div>
+                <div ng-show="!historyResults[m]">无</div>
+            </td>
+
+            <!--<td ng-show="historyResults['1']">
+                <a href="{{historyResults['1'].url}}" class="btn btn-primary" target="_blank">
+                    <span class="glyphicon glyphicon-cloud-download"></span>
+                </a>
+            </td>
+            <td ng-show="!historyResults['1']">无</td>
+
+            <td ng-show="historyResults['2']"><a href="{{historyResults['2'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['2']">无</td>
+            <td ng-show="historyResults['3']"><a href="{{historyResults['3'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['3']">无</td>
+            <td ng-show="historyResults['4']"><a href="{{historyResults['4'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['4']">无</td>
+            <td ng-show="historyResults['5']"><a href="{{historyResults['5'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['5']">无</td>
+            <td ng-show="historyResults['6']"><a href="{{historyResults['6'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['6']">无</td>-->
+        </tr>
+        <tr>
+            <th class="text-center">7月</th>
+            <th class="text-center">8月</th>
+            <th class="text-center">9月</th>
+            <th class="text-center">10月</th>
+            <th class="text-center">11月</th>
+            <th class="text-center">12月</th>
+        </tr>
+        <tr>
+            <td ng-repeat="m in [7,8,9,10,11,12]">
+                <div ng-show="historyResults[m]">
+                    <a href="{{historyResults[m].url}}" class="btn btn-primary" target="_blank">
+                        <span class="glyphicon glyphicon-cloud-download" title="下载结果"></span>
+                        下载结果
+                    </a>
+                    <a class="btn btn-danger" ng-click="recheck(year, m)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        重新对账
+                    </a>
+                </div>
+                <div ng-show="!historyResults[m]">无</div>
+            </td>
+
+            <!--<td ng-show="historyResults['7']"><a href="{{historyResults['7'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['7']">无</td>
+            <td ng-show="historyResults['8']"><a href="{{historyResults['8'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['8']">无</td>
+            <td ng-show="historyResults['9']"><a href="{{historyResults['9'].url}}" class="btn btn-primary"
+                                                 target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['9']">无</td>
+            <td ng-show="historyResults['10']"><a href="{{historyResults['10'].url}}" class="btn btn-primary"
+                                                  target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['10']">无</td>
+            <td ng-show="historyResults['11']"><a href="{{historyResults['11'].url}}" class="btn btn-primary"
+                                                  target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['11']">无</td>
+            <td ng-show="historyResults['12']"><a href="{{historyResults['12'].url}}" class="btn btn-primary"
+                                                  target="_blank"><span
+                    class="glyphicon glyphicon-cloud-download"></span></a></td>
+            <td ng-show="!historyResults['12']">无</td>-->
+        </tr>
+        </tbody>
+
+        <tbody ng-show="isLoading">
+        <tr>
+            <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+
+        <tbody ng-show="canShowError">
+        <tr>
+            <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

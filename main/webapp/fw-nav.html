@@ -1,0 +1,17 @@
+<div>
+    <div><h3><a ui-sref=".">{{loggedInUser.name}}</a></h3></div>
+    <ul>
+        <!--<li><a href="" title="上传订单或出纳记录">上传</a></li>-->
+
+        <li>
+            <a data-ui-sref=".o" title="订单">订单</a>
+            <!--<ul>-->
+                <!--<li ng-repeat="month in months"><a data-ui-sref=".o.m({month: month})" ng-bind="month"></a></li>-->
+            <!--</ul>-->
+        </li>
+
+        <li><a data-ui-sref=".n" title="待审核的手机用户上传付款通知">待审付款通知</a></li>
+        <!--<li><a data-ui-sref=".e">有误</a></li>-->
+        <li><a data-ui-sref=".t" title="系统无法关联订单的出纳记录">待关联出纳</a></li>
+    </ul>
+</div>

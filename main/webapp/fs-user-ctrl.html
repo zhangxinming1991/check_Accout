@@ -1,0 +1,207 @@
+<div>
+    <div><p class="text-center h2">用户控制</p></div>
+    <uib-tabset>
+        <uib-tab>
+            <uib-tab-heading>
+                <span class=""></span>对账联系人
+            </uib-tab-heading>
+            <div ng-controller="fscnCtrl">
+                <table st-table="dispItems" st-safe-src="items" class="table table-bordered table-striped">
+                    <caption class="caption h3 text-center" title="">管控对账联系人
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><input st-search="username" placeholder="用户名" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="realName" placeholder="真实姓名" type="search" size="10"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="phone" placeholder="电话" type="search" class="input-sm form-control">
+                        </th>
+                        <th><input st-search="email" placeholder="邮箱" type="search" class="input-sm form-control">
+                        </th>
+                        <th><input st-search="weixin" placeholder="微信号" type="search" class="input-sm form-control">
+                        </th>
+                        <th><input st-search="company" placeholder="个人信息/单位名称" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="companyid" placeholder="证件号/单位代码" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th>
+                            <label>
+                                <select st-search="registerWay" class="input-sm form-control">
+                                    <option value="">所有</option>
+                                    <option>个人</option>
+                                    <option>公司</option>
+                                </select>
+                            </label>
+                        </th>
+                        <th><input st-search="agent" placeholder="所属代理商" type="search" class="input-sm form-control">
+                            <!--<th></th>-->
+                        <th>
+                            <select st-search="ctlflag" class="input-sm form-control">
+                                <option value="">所有</option>
+                                <option value="0">正常</option>
+                                <option value="-3">锁定</option>
+                            </select>
+                        </th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th st-sort="username">用户名</th>
+                        <th st-sort="realName">真实姓名</th>
+                        <th st-sort="phone">电话</th>
+                        <th st-sort="email">邮箱</th>
+                        <th st-sort="weixin">微信号</th>
+                        <th st-sort="company" title="个人信息或所属单位名称">个人信息/单位名称</th>
+                        <th st-sort="companyid">证件号/单位代码</th>
+                        <th st-sort="registerWay">商户类型</th>
+                        <th st-sort="agent">所属代理商</th>
+                        <!--<th title="用以验证注册用户有效性的证据">注册凭证（合同号）</th>-->
+                        <th st-sort="ctlflag">管控状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody ng-show="items!==undefined&&items.length>0" class="">
+                    <tr ng-repeat="t in dispItems">
+                        <td>{{$index+1}}</td>
+                        <td>{{t.username}}</td>
+                        <td>{{t.realName}}</td>
+                        <td>{{t.phone}}</td>
+                        <td>{{t.email}}</td>
+                        <td>{{t.weixin}}</td>
+                        <td>{{t.company}}
+                            <!--<span class="text-info" uib-tooltip="证件号/机构代码：{{t.companyid}}"-->
+                            <!--tooltip-placement="top"-->
+                            <!--tooltip-trigger="'mouseenter'">+</span>-->
+                        </td>
+                        <td>{{t.companyid}}</td>
+                        <td>{{t.registerWay}}</td>
+                        <td>{{t.agent}}</td>
+                        <!--<td>{{t.contractMes}}</td>-->
+                        <td>{{t.ctlflag | ctrlStatusFilter}}</td>
+                        <td>
+                            <button ng-click="lock(t)" ng-disabled="t.ctlflag==-3" class=" btn btn-default">锁定</button>
+                            <button ng-click="unlock(t)" ng-disabled="t.ctlflag==0" class="btn btn-default">解锁</button>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="items!==undefined&&items.length==0">
+                    <tr>
+                        <td colspan="20" class="text-center text-info">无数据</td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="isLoading">
+                    <tr>
+                        <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="errMsg">
+                    <tr>
+                        <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+                    </tr>
+                    </tbody>
+
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </uib-tab>
+
+        <uib-tab>
+            <uib-tab-heading>
+                <span class=""></span>代理商财务员
+            </uib-tab-heading>
+            <div ng-controller="fscwCtrl">
+                <table st-table="dispItems" st-safe-src="items" class="table table-bordered table-striped">
+                    <caption class="caption h3 text-center" title="">管控代理商财务员
+                    </caption>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><input st-search="wordId" placeholder="用户名" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="name" placeholder="真实姓名" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="phone" placeholder="电话" type="search" class="input-sm form-control">
+                        </th>
+                        <th><input st-search="email" placeholder="邮箱" type="search" class="input-sm form-control">
+                        </th>
+                        <th><input st-search="companyid" placeholder="单位代码" type="search"
+                                   class="input-sm form-control">
+                        </th>
+                        <th><input st-search="agentid" placeholder="所属代理商" type="search" class="input-sm form-control">
+                        </th>
+                        <th>
+                            <select st-search="ctlflag" class="input-sm form-control">
+                                <option value="">所有</option>
+                                <option value="0">正常</option>
+                                <option value="-3">锁定</option>
+                            </select>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th st-sort="workId">用户名</th>
+                        <th st-sort="name">真实姓名</th>
+                        <th st-sort="phone">电话</th>
+                        <th st-sort="email">邮箱</th>
+                        <th st-sort="companyid">单位代码</th>
+                        <th st-sort="agentid">所属代理商</th>
+                        <th st-sort="ctlflag">管控状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody ng-show="items!==undefined&&items.length>0" class="">
+                    <tr ng-repeat="t in dispItems">
+                        <td>{{$index+1}}</td>
+                        <td>{{t.workId}}</td>
+                        <td>{{t.name}}</td>
+                        <td>{{t.phone}}</td>
+                        <td>{{t.email}}</td>
+                        <td>{{t.companyid}}</td>
+                        <td>{{t.agentid}}</td>
+                        <td>{{t.ctlflag | ctrlStatusFilter}}</td>
+                        <td>
+                            <button ng-click="lock(t)" ng-disabled="t.ctlflag==-3" class=" btn btn-default">锁定</button>
+                            <button ng-click="unlock(t)" ng-disabled="t.ctlflag==0" class="btn btn-default">解锁</button>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="items!==undefined&&items.length==0">
+                    <tr>
+                        <td colspan="20" class="text-center text-info">无数据</td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="isLoading">
+                    <tr>
+                        <td colspan="20" class="text-center text-info">正在拼命为您加载数据……</td>
+                    </tr>
+                    </tbody>
+
+                    <tbody ng-show="errMsg">
+                    <tr>
+                        <td colspan="20" class="text-center text-warning">{{errMsg}}</td>
+                    </tr>
+                    </tbody>
+
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>

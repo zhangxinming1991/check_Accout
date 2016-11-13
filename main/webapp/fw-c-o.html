@@ -1,0 +1,53 @@
+<div class="panel-group">
+    <!--文件上传-->
+    <div class="panel panel-primary" ng-controller="UploadCtrl as ctrl"
+         ng-init="uploadPanel={isOpen: false};ctrl.uploadFileType='A'; uploadInfo={}">
+        <uib-accordion>
+            <div uib-accordion-group class="panel-collapse " is-open="uploadPanel.isOpen">
+                <uib-accordion-heading class="">
+                    上传账单或出纳：<span class="pull-right glyphicon"
+                                  ng-class="{'glyphicon-chevron-down': uploadPanel.isOpen, 'glyphicon-chevron-right': !uploadPanel.isOpen}"></span>
+                </uib-accordion-heading>
+                <div role="form">
+                    <div>
+                        <label class="control-label col-md-2">文件类型：</label>
+                        <div class="form-group btn-group">
+                            <!--必须使用对象属性来绑定uploadFileType，否则UploadCtrl中看不到uploadFileType的变化，估计是uib-accordion会新创建scop的导致-->
+                            <button ng-model="ctrl.uploadFileType" ng-click="ctrl.uploadFileType='A'" class=" btn" type="button"
+                                    ng-class="ctrl.uploadFileType=='A'?'btn-primary':'btn-default'">账单
+                            </button>
+                            <button ng-model="ctrl.uploadFileType" ng-click="ctrl.uploadFileType='B'"  class=" btn" type="button"
+                                    ng-class="ctrl.uploadFileType=='B'?'btn-primary':'btn-default'">出纳
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!--<label class="control-label">文件：</label>-->
+                        <button class="btn btn-success col-md-offset-2" type="file" ngf-select="uploadFileSelect($file)"
+                                ngf-max-size="10MB"
+                            accept=".xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                            选择并上传
+                        </button>
+                        <span class="text-success" ng-bind="uploadInfo.fileName"></span>
+                    </div>
+                    <div ng-show="uploadInfo.isUploading===true">
+                        上传进度：
+                        <uib-progressbar value="uploadInfo.progress||0" max="uploadInfo.progressMax||100"
+                                         class="progress-striped"
+                                         ng-class="uploadInfo.isUploading===true?'active':''" type="info">
+                            <!--{{(Math.min(100,uploadInfo.progress||0)/(uploadInfo.progressMax||100))}}%-->
+                        </uib-progressbar>
+                    </div>
+                </div>
+                <div class="text-info" ng-bind="uploadInfo.errMsg"
+                     ng-show="uploadInfo.uploadResult===false">上传文件出错
+                </div>
+                <div class="text-info" ng-show="uploadInfo.uploadResult===true">上传成功</div>
+            </div>
+        </uib-accordion>
+    </div>
+
+    <!--<div ui-view="grid"></div>-->
+    <!--在fw-c-o-grid.html中没有真正双向绑定的量（读和写），只有读，因此这里使用ng-include是安全待的-->
+    <div ng-include="'fw-c-o-grid.html'"></div>
+</div>

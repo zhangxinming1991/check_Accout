@@ -1,0 +1,19 @@
+<div>
+    <style>
+        .top-right {
+            height: 100%;
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            display: block;
+            font-size: large;
+            display: inline;
+        }
+
+    </style>
+    <div class="top-right">
+        <a class="btn btn-primary" ng-click="signOut()"><span class="glyphicon glyphicon-user"></span> 注销登录</a>
+        <a class="btn btn-primary" ui-sref=".fw"><span class=" glyphicon glyphicon-home"></span> 主页</a>
+    </div>
+    <div class="col-lg-12 col-md-12" data-ui-view="content"></div>
+</div>

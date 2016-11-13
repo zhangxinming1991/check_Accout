@@ -1,0 +1,41 @@
+<div>
+    <table st-table="dispRemindsx" st-safe-src="fncReminds" class="table table-stripped">
+        <caption class="caption"><strong>有错误</strong>的用户上传数据</caption>
+        <thead>
+        <tr>
+            <th>付款人</th>
+            <th>付款时间</th>
+            <th>付款金额/元</th>
+            <th>付款方式</th>
+            <th>款项接收人</th>
+            <th>收款账户</th>
+            <th>凭证图片</th>
+            <th>关联结果</th>
+            <th>原因</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody ng-hide="isLoading">
+        <tr ng-repeat="r in dispRemindsx">
+            <td>{{r.payer}}</td>
+            <td>{{r.payTime}}</td>
+            <td>{{r.payAmount}}</td>
+            <td>{{r.payWay}}</td>
+            <td>{{r.payee}}</td>
+            <td>{{r.payeeAccount}}</td>
+            <td>{{r.creditPicture}}</td>
+            <td>{{r.assocResult}}</td>
+            <td>{{r.reason}}</td>
+            <td>
+                <button class="btn btn-default">？</button>
+            </td>
+        </tr>
+        </tbody>
+        <tbody ng-hide="!isLoading">
+        <tr>
+            <td colspan="10" class="text-center text-info">正在拼命为您加载数据……</td>
+        </tr>
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+</div>

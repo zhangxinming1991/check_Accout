@@ -1,0 +1,54 @@
+<div>
+    <style>
+        .item{
+            margin-top: 20px;
+        }
+        .item .item-key{
+            display: inline-block;
+            vertical-align: middle;
+            /*text-align: right;*/
+        }
+        .item .item-value{
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 20px;
+            /*font-weight: bold;*/
+        }
+    </style>
+    <div class="modal-header">
+            <span class="glyphicon glyphicon-remove top-right pull-right close" ng-click="closeMsgbox()"
+                  ng-hide="msgCfg.noCloseBtn"></span>
+        <p class="modal-title h3 text-center">个人信息</p>
+    </div>
+    <div class="modal-body">
+        <div class="">
+            <div class="row col-md-offset-3 item">
+                <div class="col-md-3 item-key">用户名</div>
+                <div class="col-md-offset-3 text-primary item-value">{{loggedInUser.username||loggedInUser.uid}}</div>
+            </div>
+            <div class="row col-md-offset-3 item">
+                <div class="col-md-3">真是姓名</div>
+                <div class="col-md-offset-3 text-primary item-value">{{loggedInUser.name}}</div>
+            </div>
+            <div class="row col-md-offset-3 item">
+                <div class="col-md-3 item-key">用户类型</div>
+                <div class="col-md-offset-2 text-primary item-value">{{loggedInUser.role|userRolePrinter}}</div>
+            </div>
+            <div class="row col-md-offset-3 item">
+                <div class="col-md-3 item-key">电话</div>
+                <div class="col-md-offset-2 text-primary item-value">{{loggedInUser.phone}}</div>
+            </div>
+            <div class="row col-md-offset-3 item">
+                <div class="col-md-3 item-key">邮箱</div>
+                <div class="col-md-offset-2 text-primary item-value">{{loggedInUser.email}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+<!--        <button class="btn btn-default" ng-click="okBtnClick()" ng-show="msgCfg.okBtn">确定</button>
+        <button class="btn btn-default" ng-click="cancelBtnClick()" ng-show="msgCfg.cancelBtn">取消</button>
+        <button class="btn btn-default" ng-click="closeMsgbox()"
+                ng-hide="(msgCfg.okBtn!==undefined||msgCfg.cancelBtn!==undefined)||msgCfg.noCloseBtn">关闭
+        </button>-->
+    </div>
+</div>

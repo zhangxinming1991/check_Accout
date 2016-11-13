@@ -1,0 +1,60 @@
+<!--文件上传-->
+<div class="" ng-controller="UploadCtrl as ctrl"
+     ng-init="uploadInfo={}">
+    <div class="panel">
+        <div class="panel-heading panel-title text-center">上传货款表和出纳表
+            <!--<span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': uploadPanel.isOpen, 'glyphicon-chevron-right': !uploadPanel.isOpen}"></span>-->
+        </div>
+        <form role="form" class="panel-body" name="uploadForm">
+            <!--            <div>
+                            <label class="control-label col-md-2">文件类型：</label>
+                            <div class="form-group btn-group">
+                                &lt;!&ndash;必须使用对象属性来绑定uploadFileType，否则UploadCtrl中看不到uploadFileType的变化，估计是uib-accordion会新创建scop的导致&ndash;&gt;
+                                <button ng-model="ctrl.uploadFileType" ng-click="ctrl.uploadFileType='A'" class=" btn" type="button"
+                                        ng-class="ctrl.uploadFileType=='A'?'btn-primary':'btn-default'">货款表
+                                </button>
+                                <button ng-model="ctrl.uploadFileType" ng-click="ctrl.uploadFileType='B'" class=" btn" type="button"
+                                        ng-class="ctrl.uploadFileType=='B'?'btn-info':'btn-default'">出纳表
+                                </button>
+                            </div>
+                        </div>-->
+            <div class="form-group">
+                <label class="control-label ">货款表：</label>
+                <!--<label class="control-label">文件：</label>-->
+                <button class="btn btn-info " type="file" ngf-select ng-model="uploadCfg.fileA" ngf-max-size="10MB" required
+                        accept=".xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                    选择货款表
+                </button>
+                <span class="text-success" ng-bind="uploadCfg.fileA.name"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label ">出纳表：</label>
+                <!--<label class="control-label">文件：</label>-->
+                <button class="btn btn-info " type="file" ngf-select ng-model="uploadCfg.fileB" ngf-max-size="10MB" required
+                        accept=".xls,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                    选择出纳表
+                </button>
+                <span class="text-success" ng-bind="uploadCfg.fileB.name"></span>
+            </div>
+            <div>
+                <button class="btn btn-primary" ng-click="formSubmit()" ng-disabled="uploadForm.$invalid">上传</button>
+            </div>
+            <div ng-show="uploadInfo.isUploading===true||uploadInfo.uploadResult===true">
+                上传进度：
+                <uib-progressbar value="uploadInfo.progress||0" max="uploadInfo.progressMax||100"
+                                 class="progress-striped"
+                                 ng-class="uploadInfo.isUploading===true?'active':''" type="info">
+                    <!--{{(Math.min(100,uploadInfo.progress||0)/(uploadInfo.progressMax||100))}}%-->
+                </uib-progressbar>
+            </div>
+        </form>
+        <div class="text-info" ng-bind="uploadInfo.errMsg"
+             ng-show="uploadInfo.uploadResult===false">上传文件出错
+        </div>
+        <div class="text-info" ng-show="uploadInfo.uploadResult===true">上传成功</div>
+    </div>
+    <div class="">
+        <!--ng-show="uploadInfo.uploadResult===true"-->
+        <button class="btn btn-success" ui-sref=".m" title="处理用户上传的付款通知数据">处理付款通知</button>
+    </div>
+</div>

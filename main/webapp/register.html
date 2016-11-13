@@ -1,0 +1,54 @@
+<div class="col-lg-offset-5 col-lg-2 col-md-offset-4 col-md-4  col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+    <div class="panel-heading">
+        <h3 class="text-center">注册</h3>
+    </div>
+    <form name="signUpForm" data-toggle="validator" role="form" ng-init="signUpCtrl.formUser.role='U'">
+        <!--用户角色-->
+        <div class="btn-group form-group">
+            <button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'U'" class="btn"
+                    ng-class="signUpCtrl.formUser.role=='U'?'btn-primary':'btn-default'" type="button">财务人员
+            </button>
+            <button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'M'" class="btn"
+                    ng-class="signUpCtrl.formUser.role=='M'?'btn-primary':'btn-default'" type="button">财务总监
+            </button>
+            <!--<button ng-model="signUpCtrl.formUser.role" uib-btn-radio="'S'" class="btn"-->
+                    <!--ng-class="signUpCtrl.formUser.role=='S'?'btn-primary':'btn-default'" type="button">系统管理员-->
+            <!--</button>-->
+        </div>
+        <!--登录名域-->
+        <div class="form-group" data-toggle="validator" role="form">
+            <!--<label  class="control-label">登录名：</label>-->
+            <input type="text" ng-model="signUpCtrl.formUser.uid" pattern="^[a-zA-Z0-9]{1,}" placeholder="登录名"
+                   class="form-control"
+                   required="">
+            <!--<div class="help-block with-errors">无效/已存在</div>-->
+        </div>
+        <!--密码域-->
+        <div class="form-group">
+            <!--<label  class="control-label">密码：</label>-->
+            <input id="inputPwd" type="password" ng-model="signUpCtrl.formUser.upwd" placeholder="密码" class="form-control"
+                   required="">
+            <!-- <div class="help-block with-errors">密码错误</div> -->
+        </div>
+        <div class="form-group">
+            <input type="text" ng-model="signUpCtrl.formUser.name" placeholder="姓名" class="form-control" required>
+        </div>
+        <!--<div class="form-group">
+            <input type="email" ng-model="signUpCtrl.formUser.email" placeholder="电子邮箱" class="form-control" required>
+        </div>-->
+        <!--<div class="form-group">
+            <input type="tel" ng-model="signUpCtrl.formUser.tel" placeholder="手机号" class="form-control">
+        </div>-->
+        <div class="form-group">
+            <input type="text" ng-model="signUpCtrl.formUser.inviteCode" placeholder="注册邀请码" class="form-control">
+        </div>
+        <div class="help-block with-errors" ng-bind="signUpCtrl.errMsg"></div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit" ng-click="signUpCtrl.submitForm()">注册</button>
+        </div>
+    </form>
+    <div>已有账户？我要
+        <button class="btn btn-link" ui-sref="login">登陆</button>
+    </div>
+
+</div>

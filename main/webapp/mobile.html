@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>三一公司</title>
+</head>
+<body ng-app="sany.mobile">
+
+<div class="panel"><h1 class="text-center">三一公司</h1></div>
+
+<div data-ui-view=""></div>
+
+</body>
+
+<script type="text/ng-template" id="login.html">
+    <div class="col-md-offset-5 col-md-2 col-sm-4 col-xs-6">
+        <form name="loginForm" role="form" class="" novalidate>
+            <!--<div class="form-group row">-->
+            <!--<label class=" control-label">登陆名：</label>-->
+            <input name="uid" class="form-control " type="text" ng-model="formUser.uid" pattern="^[a-zA-Z0-9]{1,}"
+                   placeholder="登录名" style="ime-mode: inactive" ng-required data-error="登录名格式有误" autofocus
+                   ng-class="{ 'has-error' : loginForm.uid.$invalid && !loginForm.uid.$pristine }">
+            <!--</div>-->
+            <!--<div class="form-group form-inline">-->
+            <!--<label class=" control-label">密码：</label>-->
+            <input name="upwd" type="password" ng-model="formUser.upwd" placeholder="密码" class="form-control"
+                   ng-required
+                   data-error="密码格式有误"
+                   ng-class="{ 'has-error' : loginForm.upwd.$invalid && !loginForm.upwd.$pristine }">
+            <!--&lt;!&ndash; <div class="help-block with-errors">密码错误</div> &ndash;&gt;-->
+            <!--</div>-->
+            <div ng-show="errMsg" ng-bind="errMsg" class="text-warning with-errors"></div>
+            <!--<div class="form-group form-inline hidden">-->
+            <!--<label>-->
+            <!--<input name="rememberMe" ng-model="formUser.rememberMe" type="checkbox"/>-->
+            <!--自动登陆-->
+            <!--</label>-->
+            <!--</div>-->
+            <div class="form-group">
+                <button type="submit" class="btn btn-block btn-primary" ng-click="submitForm()"
+                        title="{{loginForm.$invalid?'输入有误':''}}"
+                        ng-disabled="loginForm.$invalid">
+                    登陆
+                </button>
+            </div>
+        </form>
+    </div>
+</script>
+<script type="text/ng-template" id="upload.html">
+    <div class="col-md-offset-5 col-md-2 col-sm-4 col-xs-6">
+        <form role="form" id="uploadForm" ng-init="form={payWay:'A'}">
+            <div class="form-group">
+                <input class="form-control" ng-model="form.payMoney" placeholder="金额" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="paywaySelect">付款方式</label>
+                <select ng-model="form.payWay" id="paywaySelect" class="control-label" required>
+                    <option value="A">银行转账</option>
+                    <option value="C">现金支付</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input ng-model="form.payAccount" class="form-control" placeholder="账号">
+            </div>
+            <div class="form-group">
+                <input ng-model="form.orderNum" class="form-control" placeholder="订单号">
+            </div>
+            <div class="form-group">
+                <input ng-model="form.vicePayer" class="form-control" placeholder="代付人">
+            </div>
+            <div class="form-group">
+                <input ng-model="form.receiver" class="form-control" placeholder="款项接收人">
+            </div>
+            <div class="form-group">
+                <label for="creditPicSel" class="control-label">凭证图片</label>
+                <input ng-model="form.dataFile" class="form-control" id="creditPicSel">
+            </div>
+            <div class="text-info">{{errMsg}}</div>
+            <div class="form-group">
+                <button ng-click="submitForm()" class="btn btn-primary btn-block" type="submit">提交</button>
+            </div>
+        </form>
+    </div>
+</script>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-ui-router.min.js"></script>
+<script src="js/statehelper.min.js"></script>
+<script src="js/ng-file-upload-all.min.js"></script>
+<script src="js/angular-mocks.js"></script>
+
+<script type="text/javascript">
+    var app = angular.module('sany.mobile', ['ui.router', 'ui.router.stateHelper', 'ngFileUpload']);
+
+    function isOkResBody(resbody) {
+        return !resbody.flag;
+    }
+    // controllers
+    var signInCtrl = ['$scope', '$http', '$state', function (sgop, http, state) {
+        sgop.submitForm = function () {
+            var reqbody = {
+                username: sgop.formUser.uid,
+                password: sgop.formUser.upwd,
+                loginway: 'bc'
+            };
+            try {
+                http({
+                    method: 'post',
+                    url: '/check_Accout/ConnectP_LoginController',
+                    data: reqbody,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    transformRequest: function (obj) {
+                        var str = [];
+                        for (var p in obj) {
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        }
+                        return str.join("&");
+                    }
+                }).then(function (resPkg) {
+                    var resbody = resPkg.data;
+                    if (isOkResBody(resbody)) {
+                        alert('登陆成功')
+                        state.go('upload');
+                    } else {
+                        sgop.errMsg = resbody.errmsg || '网络或系统错误';
+                    }
+                }, function (errPkg) {
+                    sgop.errMsg = '网络或系统错误';
+                })
+            } catch (expt) {
+                console.error(expt);
+                sgop.errMsg = '网络或系统错误';
+            }
+        };
+    }];
+
+    var uploadCtrl = ['$scope', '$http', '$state', function (sgop, http, state) {
+        var reqbody = sgop.form;
+        sgop.submitForm = function () {
+            try {
+                http.post('/check_Accout/ConnectP_Pay_Controller_2', reqbody).then(function (resPkg) {
+                    alert('上传成功');
+                    // reset scope
+                    state.reload();
+                }, function (errPkg) {
+                    alert('上传失败')
+                })
+            } catch (expt) {
+                console.error(expt);
+                alert('上传失败，网络或系统错误');
+            }
+        };
+    }];
+
+
+    // ui states
+    app.config(['$stateProvider', '$urlRouterProvider', 'stateHelperProvider', function ($stateProvider, $urlRouterProvider, stateHelperProvider) {
+
+        $urlRouterProvider.when('', '/login');
+        $urlRouterProvider.otherwise('/login');
+
+        stateHelperProvider
+                .state({
+                    name: 'login',
+                    url: '/login',
+                    templateUrl: 'login.html',
+                    controller: signInCtrl
+                })
+
+                .state({
+                    name: 'upload',
+                    url: '/upload',
+                    templateUrl: 'upload.html',
+                    controller: uploadCtrl
+                })
+    }]);
+
+    // mock
+    app.requires.push('ngMockE2E');
+    app.run(['$httpBackend', '$timeout', '$q', function (bkd, timeout, Q) {
+
+//        bkd.whenGET(/.html$/).passThrough();
+
+        bkd.whenPOST('/check_Accout/ConnectP_LoginController').respond(function () {
+            return [200, {flag: 0}, {}];
+        });
+
+        bkd.whenPOST('/check_Accout/ConnectP_Pay_Controller_2').respond(function () {
+            return [200, {flag: 0}, {}];
+        });
+    }]);
+
+</script>
+</html>

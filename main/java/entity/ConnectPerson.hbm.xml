@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.ConnectPerson" table="connect_person" catalog="check_a_db" optimistic-lock="version">
+        <id name="username" type="string">
+            <column name="username" length="12" />
+            <generator class="assigned" />
+        </id>
+        <property name="phone" type="string">
+            <column name="phone" length="11" />
+        </property>
+        <property name="weixin" type="string">
+            <column name="weixin" length="20">
+                <comment>&#206;&#162;&#208;&#197;&#186;&#197;</comment>
+            </column>
+        </property>
+        <property name="company" type="string">
+            <column name="company" length="50">
+                <comment>&#181;&#165;&#206;&#187;&#195;&#251;&#179;&#198;&#163;&#168;&#184;&#182;&#191;&#238;&#200;&#203;&#195;&#251;&#179;&#198;&#163;&#169;</comment>
+            </column>
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="20" not-null="true">
+                <comment>&#185;&#171;&#203;&#190;&#195;&#251;&#179;&#198;</comment>
+            </column>
+        </property>
+        <property name="realName" type="string">
+            <column name="real_name" length="20">
+                <comment>&#213;&#230;&#202;&#181;&#208;&#213;&#195;&#251;</comment>
+            </column>
+        </property>
+        <property name="registerWay" type="java.lang.Character">
+            <column name="register_way" length="1">
+                <comment>
+                &#215;&#162;&#178;&#225;&#183;&#189;&#202;&#189;&#163;&#172;P&#163;&#186;&#184;&#246;&#200;&#203;&#163;&#187;C&#163;&#186;&#185;&#171;&#203;&#190;</comment>
+            </column>
+        </property>
+        <property name="agent" type="string">
+            <column name="agent" length="10">
+                <comment>&#203;&#249;&#202;&#244;&#180;&#250;&#192;&#237;&#201;&#204;id</comment>
+            </column>
+        </property>
+        <property name="contractMes" type="string">
+            <column name="contract_mes" length="1000">
+                <comment>
+                &#186;&#207;&#205;&#172;&#208;&#197;&#207;&#162;&#163;&#172;&#211;&#195;&#211;&#218;&#214;&#164;&#195;&#247;&#206;&#170;&#211;&#208;&#208;&#167;&#211;&#195;&#187;&#167;</comment>
+            </column>
+        </property>
+        <property name="companyid" type="string">
+            <column name="companyid" length="30">
+                <comment>&#185;&#171;&#203;&#190;&#177;&#234;&#202;&#182;</comment>
+            </column>
+        </property>
+        <property name="flag" type="java.lang.Integer">
+            <column name="flag">
+                <comment>&#201;&#243;&#186;&#203;&#205;&#168;&#185;&#253;&#177;&#234;&#214;&#190;</comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="20">
+                <comment>&#211;&#202;&#207;&#228;</comment>
+            </column>
+        </property>
+        <property name="cardid" type="string">
+            <column name="cardid" length="22">
+                <comment>&#201;&#237;&#183;&#221;&#214;&#164;</comment>
+            </column>
+        </property>
+        <property name="score" type="java.lang.Integer">
+            <column name="score">
+                <comment>&#187;&#253;&#183;&#214;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

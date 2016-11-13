@@ -1,0 +1,27 @@
+<div>
+    <h3><a ui-sref=".">{{loggedInUser.name}}</a></h3>
+    <!--<ul>-->
+    <!--<li>-->
+    <a>财务人员</a>
+    <ul ng-if="ctrl.hasSpvsdWorkers">
+        <li ng-repeat="worker in ctrl.spvsdWorkers">
+            <a ng-bind="worker.name"></a>
+            <ul>
+                <li>
+                    <a>账单</a>
+                    <!--<ul ng-if="worker.months.length>0">-->
+                    <!--<li ng-repeat="month in worker.months"><a ng-bind="month"></a></li>-->
+                    <!--</ul>-->
+                    <!--<ul ng-if="!worker.months.length>0">无账单数据</ul>-->
+                </li>
+
+                <li><a data-ui-sref=".n" title="待审核的手机用户上传付款通知">待审付款通知</a></li>
+                <!--<li><a data-ui-sref=".e">有误</a></li>-->
+                <li><a data-ui-sref=".t" title="系统无法关联订单的出纳记录">待关联出纳</a></li>
+            </ul>
+        </li>
+    </ul>
+    <ul ng-hide="ctrl.hasSpvsdWorkers">无被监管财务人员</ul>
+    <!--</li>-->
+    <!--</ul>-->
+</div>

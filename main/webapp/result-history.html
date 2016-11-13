@@ -1,0 +1,14 @@
+
+<hr class="">
+<div class="h3 text-center">历史对账结果下载</div>
+<ul class="list-group list-inline">
+    <li class="" ng-repeat="h in rhs" >
+        <a ng-show="isNonEmptyGrid" class="btn btn-default " href="{{h.url}}" target="_blank">{{h.month
+            | friendlyMonth}}</a>
+    </li>
+</ul>
+<div class="text-center">
+    <p ng-show="isNonEmptyGrid===false" class="text-info">无数据</p>
+    <p ng-show="isLoading" class="text-info">正在拼命为您加载数据……</p>
+    <p ng-show="canShowError" class="text-warning">{{errMsg}}</p>
+</div>

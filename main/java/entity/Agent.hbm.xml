@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-11-11 9:13:29 by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="entity.Agent" table="agent" catalog="check_a_db" optimistic-lock="version">
+        <id name="agentId" type="string">
+            <column name="agent_id" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="agentName" type="string">
+            <column name="agent_name" length="60">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;&#195;&#251;&#179;&#198;</comment>
+            </column>
+        </property>
+        <property name="agentConnectperson" type="string">
+            <column name="agent_connectperson" length="20">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;&#182;&#212;&#213;&#203;&#185;&#164;&#215;&#247;&#200;&#203;&#212;&#177;id</comment>
+            </column>
+        </property>
+        <property name="agentConnectpname" type="string">
+            <column name="agent_connectpname" length="20">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;&#182;&#212;&#213;&#203;&#185;&#164;&#215;&#247;&#200;&#203;&#212;&#177;&#208;&#213;&#195;&#251;</comment>
+            </column>
+        </property>
+        <property name="agentCpphone" type="string">
+            <column name="agent_cpphone" length="11">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;&#182;&#212;&#213;&#203;&#185;&#164;&#215;&#247;&#200;&#203;&#212;&#177;&#181;&#231;&#187;&#176;</comment>
+            </column>
+        </property>
+        <property name="agentCpemail" type="string">
+            <column name="agent_cpemail" length="20">
+                <comment>&#180;&#250;&#192;&#237;&#201;&#204;&#185;&#164;&#215;&#247;&#200;&#203;&#212;&#177;&#211;&#202;&#207;&#228;</comment>
+            </column>
+        </property>
+        <property name="isregister" type="java.lang.Boolean">
+            <column name="isregister">
+                <comment>&#202;&#199;&#183;&#241;&#215;&#162;&#178;&#225;&#163;&#172;&#186;&#205;&#178;&#198;&#206;&#241;&#200;&#203;&#212;&#177;&#176;&#243;&#182;&#168;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

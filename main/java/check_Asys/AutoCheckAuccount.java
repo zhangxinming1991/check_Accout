@@ -112,6 +112,7 @@ public class AutoCheckAuccount {
 	 * @return
 	 */
 	public List<BankInput> MappPayToBank(int payid,String owner){
+		logger.info("hello,world");
 		List<BankInput> mappedBankInput = null;
 		
 		PayRecord fRecord = pDao.findById(PayRecord.class, payid);

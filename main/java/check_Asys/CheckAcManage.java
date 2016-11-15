@@ -15,6 +15,7 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.hibernate.SessionFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 import com.sun.org.apache.regexp.internal.recompile;
 import com.sun.org.apache.xml.internal.resolver.helpers.PublicId;
 
@@ -363,21 +364,21 @@ public class CheckAcManage {
 			System.out.println(lbank.size());
 			for (int i = 0; i < lbank.size(); i++) {
 				BankInput bInput = (BankInput) lbank.get(i);
-
+				logger.info("***开启" + bInput.getId() + "付款记录的关联***");
 				if (bInput.getIsConnect() == true) {//使用合同号去关联货款表
 					logger.info("使用合同号去关联出纳" + bInput.getPayer());
 					jmesg = auccount.ConnectBankWithAccount(bInput,owner);
 					if ((int)jmesg.get("flag") == -1) {
-						//return jmesg;
 						logger.info("使用合同号去关联出纳" + bInput.getPayer() + "失败");
 					}
-
-					}
-				else{//使用客户名称去关联货款表
+				}
+				
+				if ((int)jmesg.get("flag") == -1) {//使用客户名称去关联货款表
 					CusSecondstore fcustom = dao_List.sDao.findById(CusSecondstore.class, bInput.getPayer());//改成用出纳记录中的绑定的手机用户的单位id或者身份证去找，同时客户表中的主键改成货款表中客户的id
 					if (fcustom == null) {
 						logger.warn("找不到付款人为：" + bInput.getPayer() + "的客户");
 					}
+					
 					else {
 						if (fcustom.getOwner().equals(owner)) {//将代理商个人信息也作为判断条件
 							if(fcustom.getContractMes() == null){//没有合同信息
@@ -401,6 +402,36 @@ public class CheckAcManage {
 						}						
 					}
 				}
+			/*	else{//使用客户名称去关联货款表
+					CusSecondstore fcustom = dao_List.sDao.findById(CusSecondstore.class, bInput.getPayer());//改成用出纳记录中的绑定的手机用户的单位id或者身份证去找，同时客户表中的主键改成货款表中客户的id
+					if (fcustom == null) {
+						logger.warn("找不到付款人为：" + bInput.getPayer() + "的客户");
+					}
+					
+					else {
+						if (fcustom.getOwner().equals(owner)) {//将代理商个人信息也作为判断条件
+							if(fcustom.getContractMes() == null){//没有合同信息
+								logger.info(fcustom.getClient() + "无合同信息");
+								auccount.ConnectBankWithCustom(bInput,bInput.getPayer(),bInput.getMoney());
+							}
+							else {
+								if (fcustom.getContractNum() <= 1) {
+									logger.info(fcustom.getClient() + "只有一个合同号,直接关联到合同号");
+									auccount.ConnectBankWithAccount_Only(bInput);//如果客户只有一个合同或者只有一个合同欠款，用该合同号去关联
+								}
+								else {//否则出纳记录关联到客户名下
+									logger.info("关联" + bInput.getId() + ":" + bInput.getPayer() + "出纳记录到客户名下");
+									auccount.ConnectBankWithCustom(bInput,bInput.getPayer(),bInput.getMoney());
+								}
+							}
+	
+						}
+						else{
+							logger.warn("出纳记录的代理商和客户名下的代理商信息不一致：");
+						}						
+					}
+				}*/
+				logger.info("***结束" + bInput.getId() + "付款记录的关联***");
 			}
 			
 			jmesg.element("flag", 0);
@@ -413,6 +444,7 @@ public class CheckAcManage {
 			return jmesg;
 		}
 	}
+
 	
 	/*对账后查看对账结果*/
 	public Object Watch_CheckAResult(Watch_CAResObject wCaResObject,String owner){

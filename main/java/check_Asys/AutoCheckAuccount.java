@@ -263,8 +263,19 @@ public class AutoCheckAuccount {
 		OriOrder fOrder = null;
 		JSONObject re_object = new JSONObject();
 		re_object.element("flag", -1);
-
+		
 		JSONArray many_contract = JSONArray.fromObject(cInput.getManyContract());
+		if (many_contract == null) {
+			logger.error("many_contract is null");
+			re_object.element("errmsg", "many_contract is null");
+			return re_object;
+		}
+		if (many_contract.size() == 0) {
+			logger.warn("没有任何合同信息");
+			re_object.element("errmsg", "没有任何合同信息");
+			return re_object;
+		}
+		
 		for (int j = 0; j < many_contract.size(); j++) {
 			JSONObject cotract_money = many_contract.getJSONObject(j);
 			
@@ -477,6 +488,7 @@ public class AutoCheckAuccount {
 	 * @return
 	 */
 	public String Enter_CaModel(String owner){
+		logger.info("sayhello");
 		logger.info("进入对账模式");
 		
 		//生成新的对账id

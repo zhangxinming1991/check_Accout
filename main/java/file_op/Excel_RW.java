@@ -472,20 +472,21 @@ public class Excel_RW {
                         case Cell.CELL_TYPE_NUMERIC:
                         	if (HSSFDateUtil.isCellDateFormatted(cell)) {
                         		Date date =	cell.getDateCellValue();
-                        		cell_svalue = new SimpleDateFormat("yyyy/MM/dd").format(date);          
+                        		cell_svalue = new SimpleDateFormat("yyyy/MM/dd").format(date); 
+                        		logger.info("time:" + cell.getDateCellValue());
                         	}
                         	else{
-                        		//System.out.print(cell.getNumericCellValue() + "t");
+                        		logger.info("num:" + cell.getNumericCellValue());
                         		cell_svalue = Double.toString(cell.getNumericCellValue());
                         	}                        		
                             break;
                         case Cell.CELL_TYPE_STRING:
                         	cell_svalue = cell.getStringCellValue();
-                 //           System.out.print(cell.getStringCellValue() + "t");
+                            logger.info("string" + cell.getStringCellValue());
                             break;
                         default:
                         	cell_svalue = null;
-                        	//System.out.println("unknow format");
+                        	logger.error("unknow format");
                         	break;
                     }
                     
@@ -507,6 +508,7 @@ public class Excel_RW {
 
 	//将excel表中的一行解析为OriOrder中的各个成员
 	public OriOrder Row_To_Ob_OriOrder(int row_id,ArrayList<Excel_Row> table,Agent agent){
+		logger.info("Row_To_Ob at : " + row_id);
 		OriOrder order = new OriOrder();
 		Excel_Row re_row = table.get(row_id);
 
@@ -539,6 +541,8 @@ public class Excel_RW {
 	
 	//将excel表中的一行解析为BankInput中的各个成员
 	public BankInput Row_To_Ob_BankIn(int row_id,ArrayList<Excel_Row> table,String ownerid) {
+		logger.info("Row_To_Ob at:" + row_id);
+		
 		BankInput bInput = new BankInput();
 		Excel_Row eRow = table.get(row_id);
 		

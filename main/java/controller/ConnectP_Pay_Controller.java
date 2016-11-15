@@ -52,7 +52,7 @@ import net.sf.json.JSONObject;
 @Controller
 public class ConnectP_Pay_Controller {
 	
-	private static Logger logger = LogManager.getLogger("controller");
+	private static Logger logger = LogManager.getLogger(ConnectP_Pay_Controller.class);
 	/*全局变量*/
 	public final static SessionFactory wFactory = new Configuration().configure().buildSessionFactory();
 	public final static ConnectP_PayService cps = new ConnectP_PayService(wFactory);
@@ -95,6 +95,7 @@ public class ConnectP_Pay_Controller {
 			pay_money = AES.aesDecrypt(request.getParameter("pay_money"),AES.key); //获取付款金额
 			pay_way = new String(AES.aesDecrypt(request.getParameter("pay_way"),AES.key).getBytes("GBK"),"GBK");//获取付款方式
 			pay_account = AES.aesDecrypt(request.getParameter("pay_account"),AES.key);//获取付款账号
+			logger.info("付款账号为" + pay_account);
 			many_pay = AES.aesDecrypt(request.getParameter("many_pay"),AES.key);//获取付款的合同及金额信息
 			receiver = new String(AES.aesDecrypt(request.getParameter("receiver"),AES.key).getBytes("GBK"),"GBK");//获取款项接受人信息
 			owner = AES.aesDecrypt(request.getParameter("owner"),AES.key);//获取付款记录所属代理商信息
@@ -166,6 +167,7 @@ public class ConnectP_Pay_Controller {
 	 */
 	@RequestMapping(value="/upload_pay_weixin")
 	public void upload_pay_weixin(HttpServletRequest request,HttpServletResponse response){
+		logger.info("***get upload_pay_weixin request***");
 		JSONObject re_jsonobject = new JSONObject();
 		
 /*		String request_s = null;
@@ -188,11 +190,14 @@ public class ConnectP_Pay_Controller {
 		String imageUrl = null;
 		try {
 			imageUrl = AES.aesDecrypt(request.getParameter("imageUrl"),AES.key);
+			logger.info("imageUrl：" + imageUrl);
 			username = AES.aesDecrypt(request.getParameter("username"),AES.key);
 			payer = cps.cDao.findById(ConnectPerson.class, username).getCompany();//获取客户名称
 			pay_money = AES.aesDecrypt(request.getParameter("pay_money"),AES.key); //获取付款金额
 			pay_way = new String(AES.aesDecrypt(request.getParameter("pay_way"),AES.key).getBytes("GBK"),"GBK");//获取付款方式
+			logger.info("pay_way:" + pay_way);
 			pay_account = AES.aesDecrypt(request.getParameter("pay_account"),AES.key);//获取付款账号
+			logger.info("pay_account：" + pay_account);
 			many_pay = AES.aesDecrypt(request.getParameter("many_pay"),AES.key);//获取付款的合同及金额信息
 			receiver = new String(AES.aesDecrypt(request.getParameter("receiver"),AES.key).getBytes("GBK"),"GBK");//获取款项接受人信息
 			owner = AES.aesDecrypt(request.getParameter("owner"),AES.key);//获取付款记录所属代理商信息
@@ -208,6 +213,7 @@ public class ConnectP_Pay_Controller {
 			Common_return(response,re_jsonobject);
 			
 			e.printStackTrace();
+			return;
 		}//获取用户名
 		
 		/*获取付款的合同及金额信息*/

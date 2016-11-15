@@ -690,6 +690,12 @@ public class PMController {
 					else if (agentid.equals("ah0001")) {
 						userJ.element("agentname", "安徽代理商(ah0001)");
 					}
+					else if (agentid.equals("xj0001")) {
+						userJ.element("agentname", "新疆代理商(xj0001)");
+					}
+					else if (agentid.equals("jx0001")) {
+						userJ.element("agentname", "江西代理商(jx0001)");
+					}
 					else{
 						userJ.element("agentname", "未知代理商");
 					}
